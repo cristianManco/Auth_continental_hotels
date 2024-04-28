@@ -6,7 +6,6 @@ import {
 } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
-import { admins } from '../entities/admin.entity';
 import { CreateAdminDto, UpdateAdminDto } from '../Dtos/common/exports';
 import { admins } from '../entities/admin.entity';
 

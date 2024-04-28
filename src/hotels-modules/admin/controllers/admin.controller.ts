@@ -1,4 +1,3 @@
-import { UpdateAdminDto } from './../Dtos/common/updateAdminDto';
 import {
   Controller,
   Get,
@@ -9,21 +8,22 @@ import {
   Put,
 } from '@nestjs/common';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { CreateAdminDto, UpdateAdminDto } from '../Dtos/common/exports';
 import { AdminService } from '../services/admin.service';
 
-@ApiTags('users')
+@ApiTags('admins')
 @ApiBearerAuth()
 @Controller('admin')
 export class AdminController {
   constructor(private readonly service: AdminService) {}
 
-  @Post()
+  @Post('new')
   create(@Body() CreateAdminDto: CreateAdminDto) {
     return this.service.create(CreateAdminDto);
   }
 
-  @Get()
+  @Get('all')
   findAll() {
     return this.service.findAll();
   }

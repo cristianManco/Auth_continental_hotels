@@ -1,2 +1,2 @@
-export * from '../common/createAdminDto';
-export * from '../common/updateAdminDto';
+export * from './createAdminDto';
+export * from './updateAdminDto';
