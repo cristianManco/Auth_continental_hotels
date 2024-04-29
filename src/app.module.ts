@@ -18,7 +18,7 @@ import { JwtGuard } from './develop/authenticate/Guard/jwt.guard';
     AuthModule,
     AdminModule,
   ],
-  controllers: [AdminModule],
+  controllers: [],
   providers: [
     {
       provide: APP_GUARD,

@@ -7,8 +7,16 @@ import {
   IsString,
   Length,
   Matches,
+  IsEnum,
 } from 'class-validator';
 import { Document } from 'mongoose';
+
+export enum typeUser {
+  SUPER_ADMIN = 'SUPER_ADMIN',
+  ADMIN = 'admin',
+  USER = 'user',
+  EMPLOOYE = 'emplooye',
+}
 
 @Schema({ timestamps: true })
 export class admins extends Document {
@@ -47,6 +55,11 @@ export class admins extends Document {
   })
   @Prop({ required: true })
   password: string;
+
+  @IsOptional()
+  @IsEnum(typeUser)
+  @Prop({ type: String, enum: typeUser, default: typeUser.USER })
+  role: typeUser;
 
   createdAt?: Date;
 }
