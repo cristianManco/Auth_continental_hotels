@@ -12,7 +12,7 @@ import dbConfig from './db_config';
         const uriDb =
           env === 'local'
             ? `${db.connection}${db.host}/${db.name}`
-            : `mongodb+srv://${db.user}:${db.password}@continental.9suzdf4.mongodb.net/${db.Name}?retryWrites=true&w=majority`;
+            : `mongodb+srv://${db.user}:${db.password}@continental.9suzdf4.mongodb.net/${db.atlas}?retryWrites=true&w=majority&appName=continental`;
         return {
           uri: uriDb,
         };
