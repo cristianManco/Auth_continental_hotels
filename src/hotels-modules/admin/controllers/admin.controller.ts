@@ -8,9 +8,8 @@ import {
   Put,
 } from '@nestjs/common';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-import { CreateAdminDto, UpdateAdminDto } from '../Dtos/common/exports';
 import { AdminService } from '../services/admin.service';
+import { CreateAdminDto, UpdateUserDto } from '../dtos/exports';
 
 @ApiTags('admins')
 @ApiBearerAuth()
@@ -19,8 +18,8 @@ export class AdminController {
   constructor(private readonly service: AdminService) {}
 
   @Post('new')
-  create(@Body() CreateAdminDto: CreateAdminDto) {
-    return this.service.create(CreateAdminDto);
+  create(@Body() createAdminDto: CreateAdminDto) {
+    return this.service.create(createAdminDto);
   }
 
   @Get('all')
@@ -34,8 +33,8 @@ export class AdminController {
   }
 
   @Put(':id')
-  update(@Param('id') id: string, @Body() UpdateAdminDto: UpdateAdminDto) {
-    return this.service.update(id, UpdateAdminDto);
+  update(@Param('id') id: string, @Body() updateAdminDto: UpdateUserDto) {
+    return this.service.update(id, updateAdminDto);
   }
 
   @Delete(':id')

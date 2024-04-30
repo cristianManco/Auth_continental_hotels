@@ -6,17 +6,18 @@ import {
 } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
-import { CreateAdminDto, UpdateAdminDto } from '../Dtos/common';
 import { admins } from '../entities/admin.entity';
+import { CreateAdminDto, UpdateUserDto } from '../dtos/exports';
 
 @Injectable()
 export class AdminService {
+  [x: string]: any;
   constructor(@InjectModel(admins.name) private model: Model<admins>) {}
 
   async create(createadminsDto: CreateAdminDto): Promise<admins> {
     try {
       // Validar el correo electrónico para el registro
-      await this.validateEmailForSignUp(createadminsDto.email);
+      await this.findOneByEmail(createadminsDto.email);
 
       // Crear el administrador
       const createdadmins = new this.model(createadminsDto);
@@ -43,16 +44,22 @@ export class AdminService {
   }
 
   async findOneByEmail(email: string): Promise<admins> {
-    const admin = await this.model.findOne({ email }).exec();
-    if (!admin) {
-      throw new NotFoundException(
-        `Administrador con correo electrónico ${email} no encontrado`,
-      );
+    const user = await this.model.findOne({ email }).exec();
+    if (!user) {
+      throw new NotFoundException(`User with email ${email} not found`);
     }
-    return admin;
+    return user;
   }
 
-  async update(id: string, updateadminsDto: UpdateAdminDto): Promise<admins> {
+  async findOneByEmailRegister(email: string): Promise<admins> {
+    const user = await this.model.findOne({ email }).exec();
+    if (user) {
+      throw new NotFoundException(`User with email ${email} already exists`);
+    }
+    return user;
+  }
+
+  async update(id: string, updateadminsDto: UpdateUserDto): Promise<admins> {
     const updatedadmins = await this.model
       .findByIdAndUpdate(id, updateadminsDto, { new: true })
       .exec();

@@ -2,8 +2,7 @@ import { Injectable, HttpException, HttpStatus } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { EncriptService } from 'src/develop/shared-modules/encript/encript.service';
 import { AdminService } from 'src/hotels-modules/admin/services/admin.service';
-import { loginDto } from '../Dtos/login.dto';
-import { SignupDto } from '../Dtos/signup.dto';
+import { loginDto, SignupDto } from '../Dtos/export';
 
 export type Tokens = {
   access_token: string;
@@ -13,84 +12,69 @@ export type Tokens = {
 export class AuthService {
   constructor(
     private readonly jwtService: JwtService,
-    private readonly usersService: AdminService,
-    private readonly encriptPassword: EncriptService,
+    private readonly adminService: AdminService,
+    private readonly encriptService: EncriptService,
   ) {}
 
-  async login(userLoginDto: loginDto): Promise<Tokens | null> {
-    const user = await this.usersService.findOneByEmail(userLoginDto.email);
-    if (user) {
-      const isMatch = await this.encriptPassword.comparePassword(
-        userLoginDto.password,
-        user.password,
-      );
-      if (isMatch) {
-        const payload = { email: user.email };
-        return {
-          access_token: this.jwtService.sign(payload),
-        };
-      }
+  async login(loginDto: loginDto): Promise<Tokens> {
+    const { email, password } = loginDto;
+    const user = await this.adminService.findOneByEmail(email);
+
+    if (
+      !user ||
+      !(await this.encriptService.comparePassword(password, user.password))
+    ) {
+      throw new HttpException('Invalid credentials', HttpStatus.UNAUTHORIZED);
     }
-    return null;
+
+    const payload = { email: user.email };
+    const accessToken = this.jwtService.sign(payload);
+
+    return { access_token: accessToken };
   }
 
   async register(signUPDto: SignupDto): Promise<Tokens> {
-    try {
-      // Validar el correo electrónico para el registro
-      await this.validateEmailForSignUp(signUPDto.email);
+    await this.validateEmail(signUPDto.email);
 
-      // Generar el hash de la contraseña
-      const hashedPassword = await this.encriptPassword.hash(
-        signUPDto.password,
-      );
+    const hashedPassword = await this.adminService.hash(signUPDto.password);
 
-      // Crear el usuario con el rol 'user'
-      const user = await this.usersService.create({
-        email: signUPDto.email,
-        name: signUPDto.name,
-        password: hashedPassword,
-        // role: 'user', // Agrega la propiedad 'role' con un valor apropiado
-      });
+    const user = await this.adminService.create({
+      email: signUPDto.email,
+      name: signUPDto.name,
+      password: hashedPassword,
+      clientId: '',
+      lastName: '',
+      phone: '',
+      address: '',
+    });
 
-      // Obtener los tokens para el usuario
-      const tokens = await this.getTokens({
-        sub: user.id,
-      });
-
-      return tokens;
-    } catch (error) {
-      // Manejar errores aquí (por ejemplo, enviar un mensaje de error personalizado)
-      throw new HttpException(
-        'Error al registrar el usuario',
-        HttpStatus.INTERNAL_SERVER_ERROR,
-      );
-    }
+    return await this.getTokens({
+      sub: user.id,
+    });
   }
 
-  async validateEmailForSignUp(email: string): Promise<void> {
-    const user = await this.usersService.findOneByEmailRegister(email);
-
+  async validateEmail(email: string): Promise<boolean> {
+    const user = await this.adminService.findOneByEmailRegister(email);
     if (user) {
       throw new HttpException('Email already exists', HttpStatus.BAD_REQUEST);
     }
+    return true; // O devolver false si prefieres indicar que el correo electrónico no existe
   }
 
-  // Implementa tu método getTokens aquí
-
-  async getTokens(jwtPayload: JwtPayload): Promise<Tokens> {
+  private async getTokens(payload: { sub: string }): Promise<Tokens> {
     const secretKey = process.env.JWT_SECRET;
     if (!secretKey) {
       throw new Error('JWT_SECRET is not set');
     }
+
     const accessTokenOptions = {
-      expiresIn: process.env.ACCESS_TOKEN_EXPIRY || '15m',
+      expiresIn: process.env.ACCES_TOKEN_EXPIRE || '20m',
     };
 
-    const accessToken = await this.signToken(
-      jwtPayload,
-      secretKey,
-      accessTokenOptions,
-    );
+    const accessToken = await this.jwtService.signAsync(payload, {
+      secret: secretKey,
+      ...accessTokenOptions,
+    });
 
     return { access_token: accessToken };
   }
