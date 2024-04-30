@@ -4,8 +4,7 @@ import { EncriptService } from './encript/encript.service';
 const providers = [EncriptService];
 
 @Module({
-  providers: [],
-  controllers: [],
+  providers: [...providers],
   exports: [...providers],
 })
 export class ShareModule {}

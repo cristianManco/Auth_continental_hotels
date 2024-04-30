@@ -12,7 +12,7 @@ import {
 import { Document } from 'mongoose';
 
 export enum typeUser {
-  SUPER_ADMIN = 'SUPER_ADMIN',
+  SUPER_ADMIN = 'developer',
   ADMIN = 'admin',
   USER = 'user',
   EMPLOOYE = 'emplooye',
