@@ -1,81 +1,59 @@
 import { Injectable, HttpException, HttpStatus } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
-import { EncriptService } from 'src/develop/shared-modules/encript/encript.service';
+import { HashService } from 'src/develop/shared-modules/encript/encript.service';
 import { AdminService } from 'src/hotels-modules/admin/services/admin.service';
-import { loginDto, SignupDto } from '../Dtos/export';
-
-export type Tokens = {
-  access_token: string;
-};
+import { UserLoginDto, SignUpDto } from '../Dtos/export';
+import { Tokens } from '../types';
 
 @Injectable()
 export class AuthService {
   constructor(
     private readonly jwtService: JwtService,
     private readonly adminService: AdminService,
-    private readonly encriptService: EncriptService,
+    private readonly encriptService: HashService,
   ) {}
 
-  async login(loginDto: loginDto): Promise<Tokens> {
+  async login(loginDto: UserLoginDto): Promise<Tokens> {
     const { email, password } = loginDto;
     const user = await this.adminService.findOneByEmail(email);
 
     if (
       !user ||
-      !(await this.encriptService.comparePassword(password, user.password))
+      !(await this.encriptService.compare(password, user.password))
     ) {
       throw new HttpException('Invalid credentials', HttpStatus.UNAUTHORIZED);
     }
 
-    const payload = { email: user.email };
-    const accessToken = this.jwtService.sign(payload);
-
-    return { access_token: accessToken };
+    return this.getTokens({ sub: user.id });
   }
 
-  async register(signUPDto: SignupDto): Promise<Tokens> {
+  async register(signUPDto: SignUpDto): Promise<Tokens> {
     await this.validateEmail(signUPDto.email);
 
-    const hashedPassword = await this.adminService.hash(signUPDto.password);
+    const hashedPassword = await this.encriptService.hash(signUPDto.password);
 
     const user = await this.adminService.create({
       email: signUPDto.email,
       name: signUPDto.name,
       password: hashedPassword,
-      clientId: '',
-      lastName: '',
-      phone: '',
-      address: '',
+      clientId: '1', // Agregar el campo clientId si es necesario
+      lastName: 'correa', // Agregar el campo lastName si es necesario
+      phone: '1234', // Agregar el campo phone si es necesario
+      address: 'CR 84 #16', // Agregar el campo address si es necesario
     });
 
-    return await this.getTokens({
-      sub: user.id,
-    });
+    return this.getTokens({ sub: user.id });
   }
 
-  async validateEmail(email: string): Promise<boolean> {
+  private async getTokens(payload: { sub: string }): Promise<Tokens> {
+    const accessToken = await this.jwtService.signAsync(payload);
+    return { access_token: accessToken };
+  }
+
+  private async validateEmail(email: string): Promise<void> {
     const user = await this.adminService.findOneByEmailRegister(email);
     if (user) {
       throw new HttpException('Email already exists', HttpStatus.BAD_REQUEST);
     }
-    return true; // O devolver false si prefieres indicar que el correo electrónico no existe
-  }
-
-  private async getTokens(payload: { sub: string }): Promise<Tokens> {
-    const secretKey = process.env.JWT_SECRET;
-    if (!secretKey) {
-      throw new Error('JWT_SECRET is not set');
-    }
-
-    const accessTokenOptions = {
-      expiresIn: process.env.ACCES_TOKEN_EXPIRE || '20m',
-    };
-
-    const accessToken = await this.jwtService.signAsync(payload, {
-      secret: secretKey,
-      ...accessTokenOptions,
-    });
-
-    return { access_token: accessToken };
   }
 }

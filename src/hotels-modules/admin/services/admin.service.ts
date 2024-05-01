@@ -1,3 +1,4 @@
+// Código para el servicio de administradores en la aplicación de la cadena de hoteles
 import {
   Injectable,
   HttpException,
@@ -6,22 +7,21 @@ import {
 } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
-import { admins } from '../entities/admin.entity';
-import { CreateAdminDto, UpdateUserDto } from '../dtos/exports';
+import { Admin } from '../entities/admin.entity';
+import { CreateAdminDto, UpdateAdminDto } from '../dtos/exports';
 
 @Injectable()
 export class AdminService {
-  [x: string]: any;
-  constructor(@InjectModel(admins.name) private model: Model<admins>) {}
+  constructor(@InjectModel(Admin.name) private model: Model<Admin>) {}
 
-  async create(createadminsDto: CreateAdminDto): Promise<admins> {
+  async create(createAdminDto: CreateAdminDto): Promise<Admin> {
     try {
       // Validar el correo electrónico para el registro
-      await this.findOneByEmail(createadminsDto.email);
+      await this.findOneByEmailRegister(createAdminDto.email);
 
       // Crear el administrador
-      const createdadmins = new this.model(createadminsDto);
-      return createdadmins.save();
+      const createdAdmin = new this.model(createAdminDto);
+      return createdAdmin.save();
     } catch (error) {
       // Manejar errores aquí (por ejemplo, enviar un mensaje de error personalizado)
       throw new HttpException(
@@ -31,11 +31,11 @@ export class AdminService {
     }
   }
 
-  async findAll(): Promise<admins[]> {
+  async findAll(): Promise<Admin[]> {
     return this.model.find().exec();
   }
 
-  async findOne(id: string): Promise<admins> {
+  async findOne(id: string): Promise<Admin> {
     const admin = await this.model.findById(id).exec();
     if (!admin) {
       throw new NotFoundException(`Administrador con ID ${id} no encontrado`);
@@ -43,36 +43,41 @@ export class AdminService {
     return admin;
   }
 
-  async findOneByEmail(email: string): Promise<admins> {
-    const user = await this.model.findOne({ email }).exec();
-    if (!user) {
-      throw new NotFoundException(`User with email ${email} not found`);
+  async findOneByEmail(email: string): Promise<Admin> {
+    const admin = await this.model.findOne({ email }).exec();
+    if (!admin) {
+      throw new NotFoundException(
+        `Administrador con correo electrónico ${email} no encontrado`,
+      );
     }
-    return user;
+    return admin;
   }
 
-  async findOneByEmailRegister(email: string): Promise<admins> {
-    const user = await this.model.findOne({ email }).exec();
-    if (user) {
-      throw new NotFoundException(`User with email ${email} already exists`);
+  async findOneByEmailRegister(email: string): Promise<Admin> {
+    const admin = await this.model.findOne({ email }).exec();
+    if (admin) {
+      throw new HttpException(
+        `Administrador con correo electrónico ${email} ya existe`,
+        HttpStatus.BAD_REQUEST,
+      );
     }
-    return user;
+    return admin;
   }
 
-  async update(id: string, updateadminsDto: UpdateUserDto): Promise<admins> {
-    const updatedadmins = await this.model
-      .findByIdAndUpdate(id, updateadminsDto, { new: true })
+  async update(id: string, updateAdminDto: UpdateAdminDto): Promise<Admin> {
+    const updatedAdmin = await this.model
+      .findByIdAndUpdate(id, updateAdminDto, { new: true })
       .exec();
-    if (!updatedadmins) {
+    if (!updatedAdmin) {
       throw new NotFoundException(`Administrador con ID ${id} no encontrado`);
     }
-    return updatedadmins;
+    return updatedAdmin;
   }
 
   async remove(id: string): Promise<void> {
-    const admins = await this.model.findByIdAndDelete(id).exec();
-    if (!admins) {
-      throw new NotFoundException(`admins with id ${id} not found`);
+    const admin = await this.model.findByIdAndDelete(id).exec();
+    if (!admin) {
+      throw new NotFoundException(`Administrador con ID ${id} no encontrado`);
     }
   }
 }

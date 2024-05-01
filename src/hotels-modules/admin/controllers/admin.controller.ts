@@ -1,3 +1,4 @@
+// Código para el controlador de administradores en la aplicación de la cadena de hoteles
 import {
   Controller,
   Get,
@@ -9,7 +10,7 @@ import {
 } from '@nestjs/common';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { AdminService } from '../services/admin.service';
-import { CreateAdminDto, UpdateUserDto } from '../dtos/exports';
+import { CreateAdminDto, UpdateAdminDto } from '../dtos/exports';
 
 @ApiTags('admins')
 @ApiBearerAuth()
@@ -33,7 +34,7 @@ export class AdminController {
   }
 
   @Put(':id')
-  update(@Param('id') id: string, @Body() updateAdminDto: UpdateUserDto) {
+  update(@Param('id') id: string, @Body() updateAdminDto: UpdateAdminDto) {
     return this.service.update(id, updateAdminDto);
   }
 

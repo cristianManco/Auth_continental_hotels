@@ -1,3 +1,4 @@
+// Código para la aplicación de la cadena de hoteles
 import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import dbConfig from './develop/persistence/db_config';
@@ -5,7 +6,7 @@ import { PersistenceModule } from './develop/persistence/persistence.module';
 import { AuthModule } from './develop/authenticate/auth.module';
 import { AdminModule } from './hotels-modules/admin/admin.module';
 import { APP_GUARD } from '@nestjs/core';
-import { JwtGuard } from './develop/authenticate/Guard/jwt.guard';
+import { AtGuard } from './develop/authenticate/Guard/jwt.guard';
 
 @Module({
   imports: [
@@ -22,7 +23,7 @@ import { JwtGuard } from './develop/authenticate/Guard/jwt.guard';
   providers: [
     {
       provide: APP_GUARD,
-      useClass: JwtGuard,
+      useClass: AtGuard,
     },
   ],
 })

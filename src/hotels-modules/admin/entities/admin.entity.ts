@@ -1,3 +1,4 @@
+// Código para la entidad de administrador en la aplicación de la cadena de hoteles
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Transform } from 'class-transformer';
 import {
@@ -11,15 +12,15 @@ import {
 } from 'class-validator';
 import { Document } from 'mongoose';
 
-export enum typeUser {
+export enum UserType {
   SUPER_ADMIN = 'developer',
   ADMIN = 'admin',
   USER = 'user',
-  EMPLOOYE = 'emplooye',
+  EMPLOYEE = 'employee',
 }
 
 @Schema({ timestamps: true })
-export class admins extends Document {
+export class Admin extends Document {
   @Prop({ required: true })
   adminId: string;
 
@@ -47,9 +48,7 @@ export class admins extends Document {
 
   @IsNotEmpty()
   @IsString()
-  // Minimum length 8 and maximum length 128
   @Length(8, 130)
-  // Password must contain at least one uppercase letter, one lowercase letter and one number
   @Matches(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$/, {
     message: 'password too weak',
   })
@@ -57,11 +56,11 @@ export class admins extends Document {
   password: string;
 
   @IsOptional()
-  @IsEnum(typeUser)
-  @Prop({ type: String, enum: typeUser, default: typeUser.USER })
-  role: typeUser;
+  @IsEnum(UserType)
+  @Prop({ type: String, enum: UserType, default: UserType.USER })
+  role: UserType;
 
   createdAt?: Date;
 }
 
-export const adminSchema = SchemaFactory.createForClass(admins);
+export const AdminSchema = SchemaFactory.createForClass(Admin);

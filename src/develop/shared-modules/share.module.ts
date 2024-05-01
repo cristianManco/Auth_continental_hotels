@@ -1,10 +1,10 @@
 import { Module } from '@nestjs/common';
-import { EncriptService } from './encript/encript.service';
+import { HashService } from './encript/encript.service';
 
-const providers = [EncriptService];
+const providers = [HashService];
 
 @Module({
-  providers: [...providers],
+  providers,
   exports: [...providers],
 })
-export class ShareModule {}
+export class EncriptModule {}

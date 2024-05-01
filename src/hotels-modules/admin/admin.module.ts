@@ -1,6 +1,7 @@
+// Código para el módulo de administradores en la aplicación de la cadena de hoteles
 import { Module } from '@nestjs/common';
 import { MongooseModule } from '@nestjs/mongoose';
-import { admins, adminSchema } from './entities/admin.entity';
+import { Admin, AdminSchema } from './entities/admin.entity';
 import { AdminController } from './controllers/admin.controller';
 import { AdminService } from './services/admin.service';
 
@@ -8,8 +9,8 @@ import { AdminService } from './services/admin.service';
   imports: [
     MongooseModule.forFeature([
       {
-        name: admins.name,
-        schema: adminSchema,
+        name: Admin.name,
+        schema: AdminSchema,
       },
     ]),
   ],

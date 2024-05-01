@@ -1,3 +1,4 @@
+// Código para el archivo de configuración de la base de datos en la aplicación de la cadena de hoteles
 import { registerAs } from '@nestjs/config';
 
 export default registerAs('dbConfig', () => {
