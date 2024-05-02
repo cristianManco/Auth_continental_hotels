@@ -7,6 +7,7 @@ import { AuthModule } from './develop/authenticate/auth.module';
 import { AdminModule } from './hotels-modules/admin/admin.module';
 import { APP_GUARD } from '@nestjs/core';
 import { AtGuard } from './develop/authenticate/Guard/jwt.guard';
+import { HotelModule } from './hotels-modules/hotel/hotel.module';
 
 @Module({
   imports: [
@@ -18,6 +19,7 @@ import { AtGuard } from './develop/authenticate/Guard/jwt.guard';
     PersistenceModule,
     AuthModule,
     AdminModule,
+    HotelModule,
   ],
   controllers: [],
   providers: [

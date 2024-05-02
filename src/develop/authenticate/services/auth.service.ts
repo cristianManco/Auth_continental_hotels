@@ -3,24 +3,21 @@ import { JwtService } from '@nestjs/jwt';
 import { HashService } from 'src/develop/shared-modules/encript/encript.service';
 import { AdminService } from 'src/hotels-modules/admin/services/admin.service';
 import { UserLoginDto, SignUpDto } from '../Dtos/export';
-import { Tokens } from '../types';
+import { Tokens, JwtPayload } from '../types';
 
 @Injectable()
 export class AuthService {
   constructor(
     private readonly jwtService: JwtService,
     private readonly adminService: AdminService,
-    private readonly encriptService: HashService,
+    private readonly hashService: HashService,
   ) {}
 
   async login(loginDto: UserLoginDto): Promise<Tokens> {
     const { email, password } = loginDto;
     const user = await this.adminService.findOneByEmail(email);
 
-    if (
-      !user ||
-      !(await this.encriptService.compare(password, user.password))
-    ) {
+    if (!user || !(await this.hashService.compare(password, user.password))) {
       throw new HttpException('Invalid credentials', HttpStatus.UNAUTHORIZED);
     }
 
@@ -28,32 +25,82 @@ export class AuthService {
   }
 
   async register(signUPDto: SignUpDto): Promise<Tokens> {
-    await this.validateEmail(signUPDto.email);
+    await this.validateEmailForSignUp(signUPDto.email);
 
-    const hashedPassword = await this.encriptService.hash(signUPDto.password);
+    const hashedPassword = await this.hashService.hash(signUPDto.password);
 
     const user = await this.adminService.create({
-      email: signUPDto.email,
       name: signUPDto.name,
+      phone: signUPDto.phone,
+      email: signUPDto.email,
       password: hashedPassword,
-      clientId: '1', // Agregar el campo clientId si es necesario
-      lastName: 'correa', // Agregar el campo lastName si es necesario
-      phone: '1234', // Agregar el campo phone si es necesario
-      address: 'CR 84 #16', // Agregar el campo address si es necesario
+      role: 'user',
     });
 
-    return this.getTokens({ sub: user.id });
+    return await this.getTokens({
+      sub: user.id,
+    });
   }
 
-  private async getTokens(payload: { sub: string }): Promise<Tokens> {
-    const accessToken = await this.jwtService.signAsync(payload);
+  async getTokens(jwtPayload: JwtPayload): Promise<Tokens> {
+    const secretKey = process.env.JWT_SECRET;
+    if (!secretKey) {
+      throw new Error('JWT_SECRET is not set');
+    }
+    const accessTokenOptions = {
+      expiresIn: process.env.ACCESS_TOKEN_EXPIRY || '15m',
+    };
+
+    const accessToken = await this.signToken(
+      jwtPayload,
+      secretKey,
+      accessTokenOptions,
+    );
+
     return { access_token: accessToken };
   }
 
-  private async validateEmail(email: string): Promise<void> {
-    const user = await this.adminService.findOneByEmailRegister(email);
-    if (user) {
-      throw new HttpException('Email already exists', HttpStatus.BAD_REQUEST);
-    }
+  async signToken(payload: JwtPayload, secretKey: string, options: any) {
+    return await this.jwtService.signAsync(payload, {
+      secret: secretKey,
+      ...options,
+    });
   }
+
+  async validateEmailForSignUp(email: string): Promise<boolean | undefined> {
+    const user = await this.adminService.findOneByEmailRegister(email);
+
+    if (user) {
+      throw new HttpException('Email already exists!', 400);
+    }
+    return true;
+  }
+
+  // async register(signUpDto: SignUpDto): Promise<Tokens> {
+  //   await this.validateEmail(signUpDto.email);
+
+  //   const hashedPassword = await this.hashService.hash(signUpDto.password);
+
+  //   const user = await this.adminService.create({
+  //     name: signUpDto.name,
+  //     phone: signUpDto.phone,
+  //     email: signUpDto.email,
+  //     password: hashedPassword,
+  //     role: 'user',
+  //   });
+
+  //   return this.getTokens({ sub: user.id });
+  // }
+
+  // private async getTokens(payload: { sub: string }): Promise<Tokens> {
+  //   const accessToken = await this.jwtService.signAsync(payload);
+  //   return { access_token: accessToken };
+  // }
+
+  // private async validateEmail(email: string): Promise<void> {
+  //   const user = await this.adminService.findOneByEmailRegister(email);
+  //   if (user) {
+  //     throw new HttpException('Email already exists', HttpStatus.BAD_REQUEST);
+  //   }
+  // }
 }

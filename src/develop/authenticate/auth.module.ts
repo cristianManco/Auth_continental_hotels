@@ -12,6 +12,7 @@ import { AdminModule } from './../../hotels-modules/admin/admin.module';
       secret: process.env.JWT_SECRET,
       signOptions: { expiresIn: process.env.ACCES_TOKEN_EXPIRE || '1h' },
     }),
+
     EncriptModule,
     AdminModule,
   ],

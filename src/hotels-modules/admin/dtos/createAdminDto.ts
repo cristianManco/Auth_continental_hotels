@@ -5,15 +5,11 @@ import {
   IsString,
   MinLength,
   MaxLength,
+  IsOptional,
 } from 'class-validator';
 import { ApiProperty } from '@nestjs/swagger';
 
 export class CreateAdminDto {
-  @ApiProperty()
-  @IsNotEmpty()
-  @IsString()
-  clientId: string;
-
   @ApiProperty()
   @IsNotEmpty()
   @IsString()
@@ -22,17 +18,7 @@ export class CreateAdminDto {
   @ApiProperty()
   @IsNotEmpty()
   @IsString()
-  lastName: string;
-
-  @ApiProperty()
-  @IsNotEmpty()
-  @IsString()
   phone: string;
-
-  @ApiProperty()
-  @IsNotEmpty()
-  @IsString()
-  address: string;
 
   @ApiProperty()
   @IsNotEmpty()
@@ -46,4 +32,9 @@ export class CreateAdminDto {
     message: 'La contraseña no puede exceder los 50 caracteres',
   })
   password: string;
+
+  @ApiProperty()
+  @IsOptional()
+  @IsString()
+  role: string;
 }

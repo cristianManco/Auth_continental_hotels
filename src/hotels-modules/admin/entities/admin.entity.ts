@@ -21,25 +21,14 @@ export enum UserType {
 
 @Schema({ timestamps: true })
 export class Admin extends Document {
-  @Prop({ required: true })
-  adminId: string;
+  // @Prop({ required: true })
+  // adminId: string;
 
   @Prop({ required: true })
   name: string;
 
   @Prop({ required: true })
-  lastName: string;
-
-  @IsOptional()
-  @Prop({ required: false })
-  gender: string;
-
-  @Prop({ required: true })
   phone: string;
-
-  @IsOptional()
-  @Prop({ required: true })
-  address: string;
 
   @IsEmail()
   @Transform(({ value }) => value.toLowerCase())
@@ -64,3 +53,9 @@ export class Admin extends Document {
 }
 
 export const AdminSchema = SchemaFactory.createForClass(Admin);
+// AdminSchema.index(
+//   { adminId: 1 },
+//   {
+//     name: 'index to improve adminId search query',
+//   },
+// );

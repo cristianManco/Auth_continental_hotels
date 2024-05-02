@@ -9,6 +9,17 @@ import {
 } from 'class-validator';
 
 export class SignUpDto {
+  // Se añade el campo "name" correspondiente a la entidad "admins"
+  @ApiProperty()
+  @IsNotEmpty()
+  @IsString()
+  name: string;
+
+  @ApiProperty()
+  @IsNotEmpty()
+  @IsString()
+  phone: string;
+
   @ApiProperty()
   @IsEmail()
   @IsNotEmpty()
@@ -20,13 +31,6 @@ export class SignUpDto {
   @MinLength(8, { message: 'password should be minimum 8' })
   @MaxLength(50, { message: 'password should be maximum 50' })
   password: string;
-
-  // Se añade el campo "name" correspondiente a la entidad "admins"
-  @ApiProperty()
-  @IsNotEmpty()
-  @IsString()
-  name: string;
-
   // Se añade el campo "role" correspondiente a la entidad "admins"
   @ApiProperty()
   @IsNotEmpty()

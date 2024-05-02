@@ -1,11 +1,13 @@
 // Código para el guardia de autenticación en la aplicación de la cadena de hoteles
 import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
-import { ExecutionContext } from '@nestjs/common';
+import { ExecutionContext, Logger } from '@nestjs/common';
 import { Reflector } from '@nestjs/core';
 
 @Injectable()
 export class AtGuard extends AuthGuard('jwt') {
+  private readonly logger = new Logger(AtGuard.name);
+
   constructor(private reflector: Reflector) {
     super();
   }
@@ -30,6 +32,8 @@ export class AtGuard extends AuthGuard('jwt') {
     }
 
     if (!user) {
+      this.logger.warn('Acceso denegado: Intento de acceso no autorizado');
+
       console.warn('Acceso denegado: Intento de acceso no autorizado');
       throw new UnauthorizedException('Acceso denegado.');
     }

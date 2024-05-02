@@ -23,7 +23,6 @@ export class AdminService {
       const createdAdmin = new this.model(createAdminDto);
       return createdAdmin.save();
     } catch (error) {
-      // Manejar errores aquí (por ejemplo, enviar un mensaje de error personalizado)
       throw new HttpException(
         'Error al crear el administrador',
         HttpStatus.INTERNAL_SERVER_ERROR,
