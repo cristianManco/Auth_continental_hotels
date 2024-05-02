@@ -23,10 +23,10 @@ project/
 ├── nestjs_project/
 │   ├── Front-end/
 │   │   ├── html/
-│   │   │   ├── register.html
-│   │   │   └── login.html
+│   │   │   ├── <span style="color: blue">register.html</span>
+│   │   │   └── <span style="color: blue">login.html</span>
 │   │   └── css/
-│   │       └── styles.css
+│   │       └── <span style="color: blue">styles.css</span>
 │   ├── src/
 │   │   ├── develop/
 │   │   │   ├── authenticate/
@@ -62,6 +62,7 @@ project/
 ├── package.json
 ├── tsconfig.json
 └── README.md
+
 
 ```
 
