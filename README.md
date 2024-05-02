@@ -18,15 +18,15 @@ This project implements a hotel chain management application using NestJS. The a
 
 The project is structured as follows:
 
-```
+```markdown
 project/
 ├── nestjs_project/
 │   ├── Front-end/
 │   │   ├── html/
-│   │   │   ├── <span style="color: blue">register.html</span>
-│   │   │   └── <span style="color: blue">login.html</span>
+│   │   │   ├── **register.html**
+│   │   │   └── **login.html**
 │   │   └── css/
-│   │       └── <span style="color: blue">styles.css</span>
+│   │       └── **styles.css**
 │   ├── src/
 │   │   ├── develop/
 │   │   │   ├── authenticate/
@@ -51,18 +51,14 @@ project/
 │   │   │       ├── controller/
 │   │   │       ├── dtos/
 │   │   │       ├── service/
-│   │   │       └── entities/
-│   │   ├── main.ts
-│   │   └── app.module.ts
-├── js/
-│   ├── index.js
-│   ├── product.js
-│   ├── bankAccount.js
-│   └── palindrome.js
+│   │   |       └── entities/
+|   |   └───  hotel.module.ts
+│   ├────── main.ts
+│   └──────── app.module.ts
+|
 ├── package.json
 ├── tsconfig.json
 └── README.md
-
 
 ```
 
