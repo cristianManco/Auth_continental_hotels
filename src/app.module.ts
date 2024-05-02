@@ -16,10 +16,10 @@ import { HotelModule } from './hotels-modules/hotel/hotel.module';
       load: [dbConfig],
       isGlobal: true,
     }),
-    PersistenceModule,
-    AuthModule,
     AdminModule,
     HotelModule,
+    AuthModule,
+    PersistenceModule,
   ],
   controllers: [],
   providers: [

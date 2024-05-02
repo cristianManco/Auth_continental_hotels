@@ -22,7 +22,9 @@ export class AtGuard extends AuthGuard('jwt') {
   handleRequest(err, user, info: Error) {
     if (err || info) {
       console.error(`Error de JWT: ${info?.message || err}`);
-      throw new UnauthorizedException('Token es inválido o ha expirado.');
+      throw new UnauthorizedException(
+        'Token de acceso es inválido o ha expirado.',
+      );
     }
     if (!user) {
       this.logger.warn('Acceso denegado: Intento de acceso no autorizado');

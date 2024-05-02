@@ -3,7 +3,7 @@ import { JwtService } from '@nestjs/jwt';
 import { HashService } from 'src/develop/shared-modules/encript/encript.service';
 import { AdminService } from 'src/hotels-modules/admin/services/admin.service';
 import { UserLoginDto, SignUpDto } from '../Dtos/export';
-import { Tokens, JwtPayload } from '../types';
+import { Tokens, JwtPayload } from '../types/export';
 
 @Injectable()
 export class AuthService {

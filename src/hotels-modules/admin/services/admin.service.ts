@@ -32,7 +32,7 @@ export class AdminService {
       return await newAdmin;
     } catch (error) {
       throw new HttpException(
-        'Error al crear el administrador',
+        'Error al crear el usuario: ',
         HttpStatus.INTERNAL_SERVER_ERROR,
       );
     }
