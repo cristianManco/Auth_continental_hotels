@@ -16,12 +16,20 @@ export class AdminService {
 
   async create(createAdminDto: CreateAdminDto): Promise<Admin> {
     try {
-      // Validar el correo electrónico para el registro
-      await this.findOneByEmailRegister(createAdminDto.email);
+      // Verificar si el correo electrónico ya está registrado
+      const existingAdmin = await this.model
+        .findOne({ email: createAdminDto.email })
+        .exec();
+      if (existingAdmin) {
+        throw new HttpException(
+          'El correo electrónico ya está registrado',
+          HttpStatus.BAD_REQUEST,
+        );
+      }
 
-      // Crear el administrador
-      const createdAdmin = new this.model(createAdminDto);
-      return createdAdmin.save();
+      // Crear el nuevo administrador
+      const newAdmin = await this.model.create(createAdminDto);
+      return await newAdmin;
     } catch (error) {
       throw new HttpException(
         'Error al crear el administrador',

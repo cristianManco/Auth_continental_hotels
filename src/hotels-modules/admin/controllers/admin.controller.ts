@@ -11,7 +11,9 @@ import {
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { AdminService } from '../services/admin.service';
 import { CreateAdminDto, UpdateAdminDto } from '../dtos/exports';
+// import { Public } from 'src/develop/decorators/public.decorator';
 
+// @Public()
 @ApiTags('admins')
 @ApiBearerAuth()
 @Controller('admin')
@@ -29,17 +31,17 @@ export class AdminController {
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
+  findOne(@Param('_id') id: string) {
     return this.service.findOne(id);
   }
 
   @Put(':id')
-  update(@Param('id') id: string, @Body() updateAdminDto: UpdateAdminDto) {
+  update(@Param('_id') id: string, @Body() updateAdminDto: UpdateAdminDto) {
     return this.service.update(id, updateAdminDto);
   }
 
   @Delete(':id')
-  remove(@Param('id') id: string) {
+  remove(@Param('_id') id: string) {
     return this.service.remove(id);
   }
 }

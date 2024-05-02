@@ -21,9 +21,6 @@ export enum UserType {
 
 @Schema({ timestamps: true })
 export class Admin extends Document {
-  // @Prop({ required: true })
-  // adminId: string;
-
   @Prop({ required: true })
   name: string;
 
@@ -39,7 +36,7 @@ export class Admin extends Document {
   @IsString()
   @Length(8, 130)
   @Matches(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$/, {
-    message: 'password too weak',
+    message: 'The password is not secure enough try with more characters',
   })
   @Prop({ required: true })
   password: string;
@@ -53,9 +50,3 @@ export class Admin extends Document {
 }
 
 export const AdminSchema = SchemaFactory.createForClass(Admin);
-// AdminSchema.index(
-//   { adminId: 1 },
-//   {
-//     name: 'index to improve adminId search query',
-//   },
-// );

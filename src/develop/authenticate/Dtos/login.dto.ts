@@ -16,9 +16,11 @@ export class UserLoginDto {
   @Transform(({ value }) => value.toLowerCase())
   email: string;
 
-  @ApiProperty({ description: 'password should be', minimum: 6, maximum: 30 })
+  @ApiProperty({ description: 'password should be', minimum: 6, maximum: 50 })
   @IsNotEmpty()
-  @MinLength(8, { message: 'password should be minimum 8' })
-  @MaxLength(50, { message: 'password should be maximum 50' })
+  @MinLength(8, { message: 'password should be minimum 8 characters' })
+  @MaxLength(50, {
+    message: 'The password must not exceed 50 characters maximum',
+  })
   password: string;
 }
