@@ -13,17 +13,17 @@ export class CreateAdminDto {
   @ApiProperty()
   @IsNotEmpty()
   @IsString()
-  name: string;
+  readonly name: string;
 
   @ApiProperty()
   @IsNotEmpty()
   @IsString()
-  phone: string;
+  readonly phone: string;
 
   @ApiProperty()
   @IsNotEmpty()
   @IsEmail()
-  email: string;
+  readonly email: string;
 
   @ApiProperty()
   @IsNotEmpty()
@@ -31,10 +31,10 @@ export class CreateAdminDto {
   @MaxLength(50, {
     message: 'La contraseña no puede exceder los 50 caracteres',
   })
-  password: string;
+  readonly password: string;
 
   @ApiProperty()
   @IsOptional()
   @IsString()
-  role: string;
+  readonly role: string;
 }

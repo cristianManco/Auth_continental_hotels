@@ -23,12 +23,12 @@ export class AtGuard extends AuthGuard('jwt') {
     if (err || info) {
       console.error(`Error de JWT: ${info?.message || err}`);
       throw new UnauthorizedException(
-        'Token de acceso es inválido o ha expirado.',
+        'The Access Token is invalid or has expired.',
       );
     }
     if (!user) {
-      this.logger.warn('Acceso denegado: Intento de acceso no autorizado');
-      throw new UnauthorizedException('Acceso denegado.');
+      this.logger.warn('Access denied: Unauthorized access attempt.');
+      throw new UnauthorizedException('Access denied.');
     }
     return user;
   }

@@ -71,7 +71,7 @@ export class AuthService {
     const user = await this.adminService.findOneByEmailRegister(email);
 
     if (user) {
-      throw new HttpException('Email already exists!', 400);
+      throw new HttpException('Email already exists! Try again', 400);
     }
     return true;
   }

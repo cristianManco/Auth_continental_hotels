@@ -22,7 +22,7 @@ export class AdminService {
         .exec();
       if (existingAdmin) {
         throw new HttpException(
-          'El correo electrónico ya está registrado',
+          'The email address is already registered',
           HttpStatus.BAD_REQUEST,
         );
       }
@@ -32,7 +32,7 @@ export class AdminService {
       return await newAdmin;
     } catch (error) {
       throw new HttpException(
-        'Error al crear el usuario: ',
+        'Error creating the user: ',
         HttpStatus.INTERNAL_SERVER_ERROR,
       );
     }
@@ -45,7 +45,7 @@ export class AdminService {
   async findOne(id: string): Promise<Admin> {
     const admin = await this.model.findById(id).exec();
     if (!admin) {
-      throw new NotFoundException(`usuario con ID ${id} no encontrado`);
+      throw new NotFoundException(`user with ID ${id} not found`);
     }
     return admin;
   }
@@ -53,9 +53,7 @@ export class AdminService {
   async findOneByEmail(email: string): Promise<Admin> {
     const admin = await this.model.findOne({ email }).exec();
     if (!admin) {
-      throw new NotFoundException(
-        `usuario con correo electrónico ${email} no encontrado`,
-      );
+      throw new NotFoundException(`user with email address ${email} not found`);
     }
     return admin;
   }
@@ -64,7 +62,7 @@ export class AdminService {
     const admin = await this.model.findOne({ email }).exec();
     if (admin) {
       throw new HttpException(
-        `usuario con correo electrónico ${email} ya existe`,
+        `user with email   ${email} already exists`,
         HttpStatus.BAD_REQUEST,
       );
     }
@@ -76,7 +74,7 @@ export class AdminService {
       .findByIdAndUpdate(id, updateAdminDto, { new: true })
       .exec();
     if (!updatedAdmin) {
-      throw new NotFoundException(`usuario con ID ${id} no encontrado`);
+      throw new NotFoundException(`user with ID ${id} not found`);
     }
     return updatedAdmin;
   }
@@ -84,7 +82,7 @@ export class AdminService {
   async remove(id: string): Promise<void> {
     const admin = await this.model.findByIdAndDelete(id).exec();
     if (!admin) {
-      throw new NotFoundException(`usuario con ID ${id} no encontrado`);
+      throw new NotFoundException(`user with ID ${id} not found`);
     }
   }
 }

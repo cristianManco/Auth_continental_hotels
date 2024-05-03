@@ -32,7 +32,7 @@ export class HotelService {
   async findOne(id: string): Promise<Hotel> {
     const hotel = await this.model.findById(id).exec();
     if (!hotel) {
-      throw new NotFoundException(`Hotel con ID ${id} no encontrado`);
+      throw new NotFoundException(`Hotel with ID ${id} not found`);
     }
     return hotel;
   }
@@ -42,7 +42,7 @@ export class HotelService {
       .findByIdAndUpdate(id, updateHotelDto, { new: true })
       .exec();
     if (!updatedHotel) {
-      throw new NotFoundException(`Hotel con ID ${id} no encontrado`);
+      throw new NotFoundException(`Hotel with ID ${id} not found`);
     }
     return updatedHotel;
   }
@@ -50,7 +50,7 @@ export class HotelService {
   async remove(id: string): Promise<void> {
     const hotel = await this.model.findByIdAndDelete(id).exec();
     if (!hotel) {
-      throw new NotFoundException(`Hotel con ID ${id} no encontrado`);
+      throw new NotFoundException(`Hotel with ID ${id} not found`);
     }
   }
 }
