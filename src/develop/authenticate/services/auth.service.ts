@@ -34,7 +34,7 @@ export class AuthService {
       phone: signUPDto.phone,
       email: signUPDto.email,
       password: hashedPassword,
-      role: 'user',
+      role: signUPDto.role,
     });
 
     return await this.getTokens({
@@ -45,10 +45,10 @@ export class AuthService {
   async getTokens(jwtPayload: JwtPayload): Promise<Tokens> {
     const secretKey = process.env.JWT_SECRET;
     if (!secretKey) {
-      throw new Error('JWT_SECRET is not set');
+      throw new Error('JWT_SECRET is not set or es invalit');
     }
     const accessTokenOptions = {
-      expiresIn: process.env.ACCESS_TOKEN_EXPIRY || '15m',
+      expiresIn: process.env.ACCESS_TOKEN_EXPIRY || '30m',
     };
 
     const accessToken = await this.signToken(
@@ -76,31 +76,7 @@ export class AuthService {
     return true;
   }
 
-  // async register(signUpDto: SignUpDto): Promise<Tokens> {
-  //   await this.validateEmail(signUpDto.email);
-
-  //   const hashedPassword = await this.hashService.hash(signUpDto.password);
-
-  //   const user = await this.adminService.create({
-  //     name: signUpDto.name,
-  //     phone: signUpDto.phone,
-  //     email: signUpDto.email,
-  //     password: hashedPassword,
-  //     role: 'user',
-  //   });
-
-  //   return this.getTokens({ sub: user.id });
-  // }
-
-  // private async getTokens(payload: { sub: string }): Promise<Tokens> {
-  //   const accessToken = await this.jwtService.signAsync(payload);
-  //   return { access_token: accessToken };
-  // }
-
-  // private async validateEmail(email: string): Promise<void> {
-  //   const user = await this.adminService.findOneByEmailRegister(email);
-  //   if (user) {
-  //     throw new HttpException('Email already exists', HttpStatus.BAD_REQUEST);
-  //   }
+  // async logout(req: Request): Promise<void> {
+  //   await this.adminService.logout(req);
   // }
 }

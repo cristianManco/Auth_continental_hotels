@@ -16,7 +16,7 @@ export enum UserType {
   SUPER_ADMIN = 'developer',
   ADMIN = 'admin',
   USER = 'user',
-  EMPLOYEE = 'employee',
+  EMPLOYEE = 'emplooye',
 }
 
 @Schema({ timestamps: true })

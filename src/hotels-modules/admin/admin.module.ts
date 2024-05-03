@@ -4,6 +4,8 @@ import { MongooseModule } from '@nestjs/mongoose';
 import { Admin, AdminSchema } from './entities/admin.entity';
 import { AdminController } from './controllers/admin.controller';
 import { AdminService } from './services/admin.service';
+// import { ResetPasswordController } from './controllers/resetPassword.controller';
+// import { UsersService } from './services/user.service';
 
 @Module({
   imports: [

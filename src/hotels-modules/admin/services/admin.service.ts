@@ -45,7 +45,7 @@ export class AdminService {
   async findOne(id: string): Promise<Admin> {
     const admin = await this.model.findById(id).exec();
     if (!admin) {
-      throw new NotFoundException(`Administrador con ID ${id} no encontrado`);
+      throw new NotFoundException(`usuario con ID ${id} no encontrado`);
     }
     return admin;
   }
@@ -54,7 +54,7 @@ export class AdminService {
     const admin = await this.model.findOne({ email }).exec();
     if (!admin) {
       throw new NotFoundException(
-        `Administrador con correo electrónico ${email} no encontrado`,
+        `usuario con correo electrónico ${email} no encontrado`,
       );
     }
     return admin;
@@ -64,7 +64,7 @@ export class AdminService {
     const admin = await this.model.findOne({ email }).exec();
     if (admin) {
       throw new HttpException(
-        `Administrador con correo electrónico ${email} ya existe`,
+        `usuario con correo electrónico ${email} ya existe`,
         HttpStatus.BAD_REQUEST,
       );
     }
@@ -76,7 +76,7 @@ export class AdminService {
       .findByIdAndUpdate(id, updateAdminDto, { new: true })
       .exec();
     if (!updatedAdmin) {
-      throw new NotFoundException(`Administrador con ID ${id} no encontrado`);
+      throw new NotFoundException(`usuario con ID ${id} no encontrado`);
     }
     return updatedAdmin;
   }
@@ -84,7 +84,7 @@ export class AdminService {
   async remove(id: string): Promise<void> {
     const admin = await this.model.findByIdAndDelete(id).exec();
     if (!admin) {
-      throw new NotFoundException(`Administrador con ID ${id} no encontrado`);
+      throw new NotFoundException(`usuario con ID ${id} no encontrado`);
     }
   }
 }

@@ -14,34 +14,37 @@ import { CreateAdminDto, UpdateAdminDto } from '../dtos/exports';
 // import { Public } from 'src/develop/decorators/public.decorator';
 
 // @Public()
-@ApiTags('admins')
+@ApiTags('Admins')
 @ApiBearerAuth()
 @Controller('admin')
 export class AdminController {
   constructor(private readonly service: AdminService) {}
 
   @Post('new')
-  create(@Body() createAdminDto: CreateAdminDto) {
-    return this.service.create(createAdminDto);
+  async create(@Body() createAdminDto: CreateAdminDto) {
+    return await this.service.create(createAdminDto);
   }
 
   @Get('all')
-  findAll() {
-    return this.service.findAll();
+  async findAll() {
+    return await this.service.findAll();
   }
 
   @Get(':id')
-  findOne(@Param('_id') id: string) {
-    return this.service.findOne(id);
+  async findOne(@Param('_id') id: string) {
+    return await this.service.findOne(id);
   }
 
   @Put(':id')
-  update(@Param('_id') id: string, @Body() updateAdminDto: UpdateAdminDto) {
-    return this.service.update(id, updateAdminDto);
+  async update(
+    @Param('_id') id: string,
+    @Body() updateAdminDto: UpdateAdminDto,
+  ) {
+    return await this.service.update(id, updateAdminDto);
   }
 
   @Delete(':id')
-  remove(@Param('_id') id: string) {
-    return this.service.remove(id);
+  async remove(@Param('_id') id: string) {
+    return await this.service.remove(id);
   }
 }

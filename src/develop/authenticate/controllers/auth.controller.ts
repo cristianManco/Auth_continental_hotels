@@ -20,4 +20,10 @@ export class AuthController {
   register(@Body() signUpDto: SignUpDto) {
     return this.authService.register(signUpDto);
   }
+
+  // @Post('logout')
+  // @HttpCode(HttpStatus.OK)
+  // async logout(@Req() req: Request): Promise<void> {
+  //   await this.authService.logout(req);
+  // }
 }
