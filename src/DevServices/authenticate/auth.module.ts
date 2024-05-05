@@ -5,6 +5,7 @@ import { AuthService } from './services/auth.service';
 import { JwtModule } from '@nestjs/jwt';
 import { EncriptModule } from '../shared-modules/share.module';
 import { AdminModule } from './../../hotels-modules/admin/admin.module';
+import { BlacklistService } from './services/blacklist/blacklist.service';
 
 @Module({
   imports: [
@@ -17,6 +18,6 @@ import { AdminModule } from './../../hotels-modules/admin/admin.module';
     AdminModule,
   ],
   controllers: [AuthController],
-  providers: [JwtStrategy, AuthService],
+  providers: [JwtStrategy, AuthService, BlacklistService],
 })
 export class AuthModule {}

@@ -1,0 +1,112 @@
+pasos para implementar el metodo de recuperar contraseñas :
+
+controller:
+
+% // reset-password.controller.ts
+% import { Controller, Post, Body, BadRequestException } from '@nestjs/common';
+% import { ResetPasswordDto } from './resetPasswordDto';
+% import { UsersService } from './user.service';
+
+% @Controller('reset-password')
+% export class ResetPasswordController {
+%   constructor(private readonly usersService: UsersService) {}
+
+%   @Post()
+%   async resetPassword(@Body() resetPasswordDto: ResetPasswordDto) {
+%     const { email, newPassword, confirmPassword } = resetPasswordDto;
+
+%     // Validar las contraseñas
+%     if (newPassword !== confirmPassword) {
+%       throw new BadRequestException('Las contraseñas no coinciden.');
+%     }
+
+%     // Buscar el usuario por correo electrónico
+%     const user = await this.usersService.findByEmail(email);
+
+%     if (!user) {
+%       throw new BadRequestException(
+%         'No se encontró un usuario con este correo electrónico.',
+%       );
+%     }
+
+%     // Actualizar la contraseña del usuario
+%     user.password = newPassword;
+%     await this.usersService.update(user.id, user);
+
+%     // Aquí puedes enviar un correo electrónico de confirmación al usuario
+
+%     return { message: 'Contraseña restablecida exitosamente.' };
+%   }
+% }
+
+services:
+
+% // user.service.ts
+% import { Injectable } from '@nestjs/common';
+% import { User } from './user.entity';
+% import { InjectRepository } from '@nestjs/typeorm';
+% import { Repository } from 'typeorm';
+
+% @Injectable()
+% export class UsersService {
+%   constructor(
+%     @InjectRepository(User)
+%     private readonly userRepository: Repository<User>,
+%   ) {}
+
+%   async findByEmail(email: string): Promise<User | undefined> {
+%     return this.userRepository.findOne({ where: { email } });
+%   }
+
+%   async update(id: string, data: Partial<User>): Promise<User> {
+%     const user = await this.userRepository.findOne({ where: { id } });
+%     if (!user) {
+%       throw new Error('El usuario no fue encontrado.');
+%     }
+%     Object.assign(user, data);
+%     return this.userRepository.save(user);
+%   }
+% }
+
+ResetPasswordDto:
+
+% export class ResetPasswordDto {
+%   email: string;
+%   newPassword: string;
+%   confirmPassword: string;
+% }
+
+entities:
+
+% import { Entity, PrimaryGeneratedColumn, Column } from 'typeorm';
+
+% @Entity()
+% export class User {
+%   @PrimaryGeneratedColumn()
+%   id: string;
+
+%   @Column()
+%   email: string;
+
+%   @Column()
+%   password: string;
+% }
+
+
+update modules:
+
+
+% import { Module } from '@nestjs/common';
+% import { HashService } from './encript/encript.service';
+% import { UsersService } from './password-recovery/user.service';
+% import { ResetPasswordController } from './password-recovery/resetPassword.controller';
+% import { TypeOrmModule } from '@nestjs/typeorm';
+% import { User } from './password-recovery/user.entity';
+
+% @Module({
+%   imports: [TypeOrmModule.forFeature([User])],
+%   providers: [HashService, UsersService],
+%   exports: [HashService, UsersService], // Exporta los servicios directamente
+%   controllers: [ResetPasswordController],
+% })
+% export class EncriptModule {}

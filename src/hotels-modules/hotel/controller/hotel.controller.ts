@@ -11,7 +11,7 @@ import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { HotelService } from '../service/hotel.service';
 import { Hotel } from '../entities/hotel.entity';
 import { CreateHotelDto, UpdateHotelDto } from '../dtos/export';
-import { Roles } from 'src/develop/decorators/roles.decorator';
+import { Roles } from 'src/DevServices/decorators/exports';
 // import { Public } from 'src/develop/decorators/public.decorator';
 
 // @Public()

@@ -1,6 +1,7 @@
 import { Injectable, HttpException, HttpStatus } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
-import { HashService } from 'src/develop/shared-modules/encript/encript.service';
+import { BlacklistService } from './blacklist/blacklist.service';
+import { HashService } from 'src/DevServices/shared-modules/encript/encript.service';
 import { AdminService } from 'src/hotels-modules/admin/services/admin.service';
 import { UserLoginDto, SignUpDto } from '../Dtos/export';
 import { Tokens, JwtPayload } from '../types/export';
@@ -11,6 +12,7 @@ export class AuthService {
     private readonly jwtService: JwtService,
     private readonly adminService: AdminService,
     private readonly hashService: HashService,
+    private readonly blackLisToken: BlacklistService,
   ) {}
 
   async login(loginDto: UserLoginDto): Promise<Tokens> {
@@ -40,6 +42,10 @@ export class AuthService {
     return await this.getTokens({
       sub: user.id,
     });
+  }
+
+  async logout(token: string): Promise<void> {
+    await this.blackLisToken.addToBlacklist(token);
   }
 
   async getTokens(jwtPayload: JwtPayload): Promise<Tokens> {
@@ -75,8 +81,4 @@ export class AuthService {
     }
     return true;
   }
-
-  // async logout(req: Request): Promise<void> {
-  //   await this.adminService.logout(req);
-  // }
 }
