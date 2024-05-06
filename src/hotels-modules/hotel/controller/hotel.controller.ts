@@ -33,7 +33,7 @@ export class HotelController {
     return await this.hotelService.findAll();
   }
 
-  @Roles('emplooye')
+  @Roles('user')
   @Get(':id')
   async findOne(@Param('_id') id: string): Promise<Hotel> {
     return await this.hotelService.findOne(id);

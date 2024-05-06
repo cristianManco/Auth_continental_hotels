@@ -17,5 +17,5 @@ export class CreateHotelDto {
   @IsString()
   readonly country: string;
 
-  // Otros campos necesarios para la creación de hoteles
+  // agregar mas campos si son necesarios para la creacióno registracion  de  nuevos hoteles
 }

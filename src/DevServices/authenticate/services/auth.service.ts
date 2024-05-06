@@ -54,7 +54,7 @@ export class AuthService {
       throw new Error('JWT_SECRET is not set or es invalit');
     }
     const accessTokenOptions = {
-      expiresIn: process.env.ACCESS_TOKEN_EXPIRY || '30m',
+      expiresIn: process.env.ACCES_TOKEN_EXPIRE || '1h',
     };
 
     const accessToken = await this.signToken(

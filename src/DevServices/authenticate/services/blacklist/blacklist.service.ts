@@ -15,7 +15,8 @@ export class BlacklistService {
   async removeFromBlacklist(token: string): Promise<void> {
     this.blacklist.delete(token);
   }
-  async getBlacklistedTokens(token: string): Promise<string[]> {
+
+  async getBlacklistedTokens(): Promise<string[]> {
     return Array.from(this.blacklist);
   }
 }
