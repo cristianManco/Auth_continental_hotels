@@ -32,11 +32,8 @@ export class AuthService {
     const hashedPassword = await this.hashService.hash(signUPDto.password);
 
     const user = await this.adminService.create({
-      name: signUPDto.name,
-      phone: signUPDto.phone,
-      email: signUPDto.email,
+      ...signUPDto,
       password: hashedPassword,
-      role: signUPDto.role,
     });
 
     return await this.getTokens({
