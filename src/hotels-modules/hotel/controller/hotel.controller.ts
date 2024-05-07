@@ -34,13 +34,13 @@ export class HotelController {
   }
 
   @Roles('user')
-  @Get(':id')
+  @Get(':_id')
   async findOne(@Param('_id') id: string): Promise<Hotel> {
     return await this.hotelService.findOne(id);
   }
 
   @Roles('admin')
-  @Put(':id')
+  @Put(':_id')
   async update(
     @Param('_id') id: string,
     @Body() updateHotelDto: UpdateHotelDto,
@@ -49,7 +49,7 @@ export class HotelController {
   }
 
   @Roles('developer')
-  @Delete(':id')
+  @Delete(':_id')
   async remove(@Param('_id') id: string): Promise<void> {
     return await this.hotelService.remove(id);
   }

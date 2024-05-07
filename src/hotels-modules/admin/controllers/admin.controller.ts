@@ -12,6 +12,7 @@ import {
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { AdminService } from '../services/admin.service';
 import { CreateAdminDto, UpdateAdminDto } from '../dtos/exports';
+import { Admin } from '../entities/admin.entity';
 // import { Public } from 'src/develop/decorators/public.decorator';
 
 // @Public()
@@ -23,7 +24,7 @@ export class AdminController {
 
   @Roles('admin')
   @Post('new')
-  async create(@Body() createAdminDto: CreateAdminDto) {
+  async create(@Body() createAdminDto: CreateAdminDto): Promise<Admin> {
     return await this.service.create(createAdminDto);
   }
 
@@ -34,22 +35,22 @@ export class AdminController {
   }
 
   @Roles('emplooye')
-  @Get(':id')
+  @Get(':_id')
   async findOne(@Param('_id') id: string) {
     return await this.service.findOne(id);
   }
 
   @Roles('admin')
-  @Put(':id')
+  @Put('path/:_id')
   async update(
     @Param('_id') id: string,
     @Body() updateAdminDto: UpdateAdminDto,
-  ) {
+  ): Promise<Admin> {
     return await this.service.update(id, updateAdminDto);
   }
 
   @Roles('developer')
-  @Delete(':id')
+  @Delete(':_id')
   async remove(@Param('_id') id: string) {
     return await this.service.remove(id);
   }

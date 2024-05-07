@@ -6,6 +6,7 @@ import {
   MinLength,
   MaxLength,
   IsOptional,
+  Matches,
 } from 'class-validator';
 import { ApiProperty } from '@nestjs/swagger';
 
@@ -30,6 +31,9 @@ export class CreateAdminDto {
   @MinLength(8, { message: 'La contraseña debe tener al menos 8 caracteres' })
   @MaxLength(50, {
     message: 'La contraseña no puede exceder los 50 caracteres',
+  })
+  @Matches(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$/, {
+    message: 'The password is not secure enough try with more characters',
   })
   readonly password: string;
 

@@ -6,9 +6,10 @@ import {
   IsNotEmpty,
   IsOptional,
   IsString,
-  Length,
   Matches,
   IsEnum,
+  MaxLength,
+  MinLength,
 } from 'class-validator';
 import { Document } from 'mongoose';
 
@@ -34,7 +35,10 @@ export class Admin extends Document {
 
   @IsNotEmpty()
   @IsString()
-  @Length(8, 130)
+  @MinLength(8, { message: 'La contraseña debe tener al menos 8 caracteres' })
+  @MaxLength(50, {
+    message: 'La contraseña no puede exceder los 50 caracteres',
+  })
   @Matches(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$/, {
     message: 'The password is not secure enough try with more characters',
   })
