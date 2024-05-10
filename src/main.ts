@@ -6,6 +6,7 @@ import { AppModule } from './app.module';
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
   const port = process.env.PORT || 3000;
+  app.enableCors();
 
   const config = new DocumentBuilder()
     .setTitle('Continental Hotels API')
