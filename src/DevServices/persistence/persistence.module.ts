@@ -13,7 +13,7 @@ import { Privated } from '../decorators/private.decorator';
       useFactory: (configService: ConfigType<typeof dbConfig>) => {
         const { db, env } = configService;
         const uriDb =
-          env === 'local'
+          env === process.env.DATABASE_ENV
             ? `mongodb+srv://${db.user}:${db.password}@continental.9suzdf4.mongodb.net/${db.atlas}?retryWrites=true&w=majority&appName=continental`
             : `${db.connection}${db.host}/${db.name}`;
         return {

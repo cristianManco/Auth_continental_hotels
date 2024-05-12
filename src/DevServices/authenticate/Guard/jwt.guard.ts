@@ -50,7 +50,7 @@ export class AtGuard extends AuthGuard('jwt') {
 
   handleRequest(err, user, info: Error) {
     if (err || info) {
-      console.error(`Error de JWT: ${info?.message || err}`);
+      console.error(`Error of JWT: ${info?.message || err}`);
       throw new UnauthorizedException(
         'The Access Token is invalid or has expired.',
       );

@@ -24,8 +24,6 @@ export class Hotel extends Document {
   @Prop({ required: true })
   country: string;
 
-  // Otros campos de la entidad Hotel
-
   createdAt?: Date;
 }
 

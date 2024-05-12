@@ -17,7 +17,7 @@ export enum UserType {
   SUPER_ADMIN = 'developer',
   ADMIN = 'admin',
   USER = 'user',
-  EMPLOYEE = 'emplooye',
+  EMPLOYEE = 'employe',
 }
 
 @Schema({ timestamps: true })
@@ -35,9 +35,9 @@ export class Admin extends Document {
 
   @IsNotEmpty()
   @IsString()
-  @MinLength(8, { message: 'La contraseña debe tener al menos 8 caracteres' })
+  @MinLength(8, { message: 'The password must be at least 8 characters long' })
   @MaxLength(50, {
-    message: 'La contraseña no puede exceder los 50 caracteres',
+    message: 'Password cannot exceed 50 characters',
   })
   @Matches(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$/, {
     message: 'The password is not secure enough try with more characters',

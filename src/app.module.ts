@@ -17,7 +17,7 @@ import { InterceptorService } from './DevServices/authenticate/services/intercep
       load: [dbConfig],
       isGlobal: true,
     }),
-    AuthModule, // recomendado importar todos los modulos en especial el de AuthModule esté importado antes de PersistenceModule
+    AuthModule,
     AdminModule,
     HotelModule,
     PersistenceModule,
