@@ -173,3 +173,77 @@ Contributions are welcome. If you'd like to contribute to the project, follow th
 
 Nest is [MIT licensed](LICENSE).
 
+
+### diagrams DB
+
++-----------------------------------+
+|           Hotel continental       |
++-----------------------------------+
+|                                   |
+|   +---------------------------+   |
+|   |         Usuario           |   |
+|   +---------------------------+   |
+|   |  - id_usuario             |   |
+|   |  - nombre                 |   |
+|   |  - correo                 |   |
+|   |  - contraseña             |   |
+|   +---------------------------+   |
+|                                   |
+|   +---------------------------+   |
+|   |       Administrador       |   |
+|   +---------------------------+   |
+|   |  - id_administrador       |   |
+|   |  - nombre                 |   |
+|   |  - correo                 |   |
+|   |  - contraseña             |   |
+|   +---------------------------+   |
+
+|   +---------------------------+   |
+|   |         empleado          |   |
+|   +---------------------------+   |
+|   |  - id_usuario             |   |
+|   |  - nombre                 |   |
+|   |  - correo                 |   |
+|   |  - contraseña             |   |
+|   +---------------------------+   |
+|                                   |
+|   +---------------------------+   |
+|   |         Habitación        |   |
+|   +---------------------------+   |
+|   |  - id_habitacion          |   |
+|   |  - tipo                   |   |
+|   |  - precio                 |   |
+|   +---------------------------+   |
+|                                   |
+|   +---------------------------+   |
+|   |         Reserva           |   |
+|   +---------------------------+   |
+|   |  - id_reserva             |   |
+|   |  - fecha_inicio           |   |
+|   |  - fecha_fin              |   |
+|   |  - id_usuario ()          |   |
+|   |  - id_habitacion ()       |   |
+|   +---------------------------+   |
+|                                   |
+|   +---------------------------+   |
+|   |         Hotel             |   |
+|   +---------------------------+   |
+|   |  - id_hotel               |   |
+|   |  - nombre                 |   |
+|   |  - pais                   |   |
+|   |  - direccion              |   |
+|   |  - ciudad                 |   |
+|   +---------------------------+   |
+|                                   |
++-----------------------------------+
+
+
+Component architecture model: This model allows you to decompose your system into individual logical or functional components. For example, get components such as Web Server, Database, User Interface
+Web Server Component:
+- Manage HTTP requests and responses.
+
+Database Component:
+- Stores and manages system data.
+
+User Interface Component:
+- Provides a graphical interface to interact with the system.
