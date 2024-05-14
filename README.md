@@ -176,66 +176,90 @@ Nest is [MIT licensed](LICENSE).
 
 ### diagrams DB
 
-+-----------------------------------+
-|           Hotel continental       |
-+-----------------------------------+
-|                                   |
-|   +---------------------------+   |
-|   |         Usuario           |   |
-|   +---------------------------+   |
-|   |  - id_usuario             |   |
-|   |  - nombre                 |   |
-|   |  - correo                 |   |
-|   |  - contraseña             |   |
-|   +---------------------------+   |
-|                                   |
-|   +---------------------------+   |
-|   |       Administrador       |   |
-|   +---------------------------+   |
-|   |  - id_administrador       |   |
-|   |  - nombre                 |   |
-|   |  - correo                 |   |
-|   |  - contraseña             |   |
-|   +---------------------------+   |
++------------------+       +------------------+       +------------------+
+|  Hotel           |       | CreateHotelDto   |       | UpdateHotelDto   |
+|------------------|       |------------------|       |------------------|
+| - id: string     |       | - name: string   |       | - name?: string  |
+| - name: string   |       | - address: string|       | - address?: string|
+| - address: string|       | - rating: number |       | - rating?: number|
+| - rating: number |       | - rooms: number  |       | - rooms?: number |
+| - rooms: number  |       | - amenities: string[] |  | - amenities?: string[] |
+| - amenities: string[] |  |                  |       |                  |
++------------------+       +------------------+       +------------------+
+        ^                          ^                             ^
+        |                          |                             |
+        |                          |                             |
+        |                          |                             |
+        +------------+-------------+                             |
+                     |                                           |
+                     |                                           |
+             +-------+-------+                                   |
+             |  HotelService |                                   |
+             |---------------|                                   |
+             | - model: Model<Hotel> |                           |
+             |-----------------------|                           |
+             | + create(CreateHotelDto): Promise<Hotel>          |
+             | + findAll(): Promise<Hotel[]>                     |
+             | + findOne(id: string): Promise<Hotel>             |
+             | + update(id: string, UpdateHotelDto): Promise<Hotel>|
+             | + remove(id: string): Promise<void>               |
+             +-----------------------+                           |
+                     ^                                           |
+                     |                                           |
+                     |                                           |
+              +------+-------+                                   |
+              | HotelController |                                |
+              |-----------------|                                |
+              | - hotelService: HotelService |                   |
+              |--------------------------------------------------|                    |
+              | + create(CreateHotelDto): Promise<Hotel>---------|
+              | + findAll(): Promise<Hotel[]>--------------------|
+              | + findOne(id: string): Promise<Hotel>------------|
+              | + update(id: string, UpdateHotelDto): Promise<Hotel> |
+              | + remove(id: string): Promise<void>--------------|
+              +--------------------------------------------------+
 
-|   +---------------------------+   |
-|   |         empleado          |   |
-|   +---------------------------+   |
-|   |  - id_usuario             |   |
-|   |  - nombre                 |   |
-|   |  - correo                 |   |
-|   |  - contraseña             |   |
-|   +---------------------------+   |
-|                                   |
-|   +---------------------------+   |
-|   |         Habitación        |   |
-|   +---------------------------+   |
-|   |  - id_habitacion          |   |
-|   |  - tipo                   |   |
-|   |  - precio                 |   |
-|   +---------------------------+   |
-|                                   |
-|   +---------------------------+   |
-|   |         Reserva           |   |
-|   +---------------------------+   |
-|   |  - id_reserva             |   |
-|   |  - fecha_inicio           |   |
-|   |  - fecha_fin              |   |
-|   |  - id_usuario ()          |   |
-|   |  - id_habitacion ()       |   |
-|   +---------------------------+   |
-|                                   |
-|   +---------------------------+   |
-|   |         Hotel             |   |
-|   +---------------------------+   |
-|   |  - id_hotel               |   |
-|   |  - nombre                 |   |
-|   |  - pais                   |   |
-|   |  - direccion              |   |
-|   |  - ciudad                 |   |
-|   +---------------------------+   |
-|                                   |
-+-----------------------------------+
++------------------+       +------------------+       +------------------+
+|  Admin           |       | CreateAdminDto   |       | UpdateAdminDto   |
+|------------------|       |------------------|       |------------------|
+| - name: string   |       | - name: string   |       | - name?: string  |
+| - phone: string  |       | - phone: string  |       | - phone?: string |
+| - email: string  |       | - email: string  |       | - email?: string |
+| - password: string |     | - password: string |     | - password?: string |
+| - role: UserType |       | - role?: string  |       | - role?: string  |
+| - createdAt?: Date |     |                  |       |                  |
++------------------+       +------------------+       +------------------+
+        ^                          ^                             ^
+        |                          |                             |
+        |                          |                             |
+        |                          |                             |
+        +------------+-------------+                             |
+                     |                                           |
+                     |                                           |
+             +-------+-------+                                   |
+             |  AdminService  |                                  |
+             |----------------|                                  |
+             | + create(CreateAdminDto): Promise<Admin>          |
+             | + findAll(): Promise<Admin[]>                     |
+             | + findOne(id: string): Promise<Admin>             |
+             | + update(id: string, UpdateAdminDto): Promise<Admin> |
+             | + remove(id: string): Promise<void>               |
+             +-----------------------+                           |
+                     ^                                           |
+                     |                                           |
+                     |                                           |
+              +------+-------+                                   |
+              | AdminController |                                |
+              |-----------------|                                |
+              | - service: AdminService |                        |
+              |-------------------------|                        |
+              | +
+
+
+
+
+
+
 
 
 Component architecture model: This model allows you to decompose your system into individual logical or functional components. For example, get components such as Web Server, Database, User Interface
