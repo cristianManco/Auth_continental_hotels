@@ -97,13 +97,99 @@ $ yarn run test:e2e
 $ yarn run test:cov
 ```
 
+### Database Diagrams
+
+#### Hotel
+
+```markdown
+
++----------------------+       +----------------------+       +----------------------+
+|  Hotel               |       | CreateHotelDto       |       | UpdateHotelDto        |
+|----------------------|       |----------------------|       |-----------------------|
+| - id: string         |       | - name: string       |       | - name?: string       |
+| - name: string       |       | - address: string    |       | - address?: string    |
+| - address: string    |       | - rating: number     |       | - rating?: number     |
+| - rating: number     |       | - rooms: number      |       | - rooms?: number      |
+| - rooms: number      |       | - amenities: string[]|       | - amenities?: string[]|
+| - amenities: string[]|       |                      |       |                       |
++----------------------+       +----------------------+       +-----------------------+
+```
+
+#### HotelService
+
+```
++-------------------------------------------------------+
+|  HotelService                                         |
+|-------------------------------------------------------|
+| - model: Model<Hotel>                                 |
+|-------------------------------------------------------|
+| + create(CreateHotelDto): Promise<Hotel>              |
+| + findAll(): Promise<Hotel[]>                         |
+| + findOne(id: string): Promise<Hotel>                 |
+| + update(id: string, UpdateHotelDto): Promise<Hotel>  |
+| + remove(id: string): Promise<void>                   |
++-------------------------------------------------------+
+```
+
+#### HotelController
+
+```
++-----------------------------------------------------+
+| HotelController                                     |
+|-----------------------------|                       |
+| - hotelService: HotelService                        |
+|-----------------------------------------------------|
+| + create(CreateHotelDto): Promise<Hotel>            |
+| + findAll(): Promise<Hotel[]>                       |
+| + findOne(id: string): Promise<Hotel>               |
+| + update(id: string, UpdateHotelDto): Promise<Hotel>|
+| + remove(id: string): Promise<void>                 |
++-----------------------------------------------------+
+```
+
+#### Admin
+
+```
++-------------------+       +-------------------+       +--------------------+
+|  Admin            |       | CreateAdminDto    |       | UpdateAdminDto     |
+|-------------------|       |-------------------|       |--------------------|
+| - name: string    |       | - name: string    |       | - name?: string    |
+| - phone: string   |       | - phone: string   |       | - phone?: string   |
+| - email: string   |       | - email: string   |       | - email?: string   |
+| - password: string|       | - password: string|       | - password?: string|
+| - role: UserType  |       | - role?: string   |       | - role?: string    |
+| - createdAt?: Date|       |                   |       |                    |
++-------------------+       +-------------------+       +--------------------+
+```
+
+#### AdminService
+
+```
++-----------------------------------------------------+
+|  AdminService                                       |
+|-----------------------------------------------------|
+| + create(CreateAdminDto): Promise<Admin>            |
+| + findAll(): Promise<Admin[]>                       |
+| + findOne(id: string): Promise<Admin>               |
+| + update(id: string, UpdateAdminDto): Promise<Admin>|
+| + remove(id: string): Promise<void>                 |
++-----------------------------------------------------+
+```
+
+#### AdminController
+
+```
++-------------------------+
+| AdminController         |
+|-------------------------|
+| - service: AdminService |
++-------------------------+
+```
+
+
 
 
 #### Folder and File Description
-
-- **Front-end/**: Contains HTML and CSS files for the user interface.
-  - **html/**: Contains registration and login forms.
-  - **css/**: Contains CSS styles for the user interface.
 
 - **src/**: Contains the main logic of the application.
   - **develop/**: Development module including authentication.
