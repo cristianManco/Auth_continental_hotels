@@ -6,15 +6,15 @@ import {
   Param,
   Put,
   Delete,
+  UsePipes,
+  ValidationPipe,
 } from '@nestjs/common';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { HotelService } from '../service/hotel.service';
 import { Hotel } from '../entities/hotel.entity';
 import { CreateHotelDto, UpdateHotelDto } from '../dtos/export';
 import { Roles } from 'src/DevServices/decorators/exports';
-// import { Public } from 'src/develop/decorators/public.decorator';
 
-// @Public()
 @ApiTags('Hotels')
 @ApiBearerAuth()
 @Controller('hotels')
@@ -23,24 +23,25 @@ export class HotelController {
 
   @Roles('admin')
   @Post('new')
-  async create(@Body() createHotelDto: CreateHotelDto): Promise<Hotel> {
+  @UsePipes(new ValidationPipe())
+  async createHotel(@Body() createHotelDto: CreateHotelDto): Promise<Hotel> {
     return await this.hotelService.create(createHotelDto);
   }
 
-  @Roles('emplooye')
+  @Roles('employe')
   @Get('all')
   async findAll(): Promise<Hotel[]> {
     return await this.hotelService.findAll();
   }
 
   @Roles('user')
-  @Get(':id')
+  @Get(':_id')
   async findOne(@Param('_id') id: string): Promise<Hotel> {
     return await this.hotelService.findOne(id);
   }
 
   @Roles('admin')
-  @Put(':id')
+  @Put(':_id')
   async update(
     @Param('_id') id: string,
     @Body() updateHotelDto: UpdateHotelDto,
@@ -49,7 +50,7 @@ export class HotelController {
   }
 
   @Roles('developer')
-  @Delete(':id')
+  @Delete(':_id')
   async remove(@Param('_id') id: string): Promise<void> {
     return await this.hotelService.remove(id);
   }

@@ -1,5 +1,4 @@
 import { Roles } from './../../../DevServices/decorators/roles.decorator';
-// Código para el controlador de administradores en la aplicación de la cadena de hoteles
 import {
   Controller,
   Get,
@@ -8,13 +7,14 @@ import {
   Param,
   Delete,
   Put,
+  UsePipes,
+  ValidationPipe,
 } from '@nestjs/common';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { AdminService } from '../services/admin.service';
 import { CreateAdminDto, UpdateAdminDto } from '../dtos/exports';
-// import { Public } from 'src/develop/decorators/public.decorator';
+import { Admin } from '../entities/admin.entity';
 
-// @Public()
 @ApiTags('Admins')
 @ApiBearerAuth()
 @Controller('admin')
@@ -23,33 +23,34 @@ export class AdminController {
 
   @Roles('admin')
   @Post('new')
-  async create(@Body() createAdminDto: CreateAdminDto) {
+  @UsePipes(new ValidationPipe())
+  async createAdmin(@Body() createAdminDto: CreateAdminDto): Promise<Admin> {
     return await this.service.create(createAdminDto);
   }
 
-  @Roles('emplooye')
+  @Roles('employe')
   @Get('all')
   async findAll() {
     return await this.service.findAll();
   }
 
-  @Roles('emplooye')
-  @Get(':id')
+  @Roles('employe')
+  @Get(':_id')
   async findOne(@Param('_id') id: string) {
     return await this.service.findOne(id);
   }
 
   @Roles('admin')
-  @Put(':id')
+  @Put('path/:_id')
   async update(
     @Param('_id') id: string,
     @Body() updateAdminDto: UpdateAdminDto,
-  ) {
+  ): Promise<Admin> {
     return await this.service.update(id, updateAdminDto);
   }
 
   @Roles('developer')
-  @Delete(':id')
+  @Delete(':_id')
   async remove(@Param('_id') id: string) {
     return await this.service.remove(id);
   }

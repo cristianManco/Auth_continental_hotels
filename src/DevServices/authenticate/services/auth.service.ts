@@ -15,6 +15,14 @@ export class AuthService {
     private readonly blackLisToken: BlacklistService,
   ) {}
 
+  async validateUser(payload: JwtPayload) {
+    const user = await this.adminService.findOne(payload.sub.toString());
+    if (!user) {
+      throw new HttpException('User not found', HttpStatus.UNAUTHORIZED);
+    }
+    return user;
+  }
+
   async login(loginDto: UserLoginDto): Promise<Tokens> {
     const { email, password } = loginDto;
     const user = await this.adminService.findOneByEmail(email);
@@ -23,7 +31,10 @@ export class AuthService {
       throw new HttpException('Invalid credentials', HttpStatus.UNAUTHORIZED);
     }
 
-    return this.getTokens({ sub: user.id });
+    return this.getTokens({
+      sub: user.id,
+      name: user.name,
+    });
   }
 
   async register(signUPDto: SignUpDto): Promise<Tokens> {
@@ -32,15 +43,13 @@ export class AuthService {
     const hashedPassword = await this.hashService.hash(signUPDto.password);
 
     const user = await this.adminService.create({
-      name: signUPDto.name,
-      phone: signUPDto.phone,
-      email: signUPDto.email,
+      ...signUPDto,
       password: hashedPassword,
-      role: signUPDto.role,
     });
 
     return await this.getTokens({
       sub: user.id,
+      name: user.name,
     });
   }
 
