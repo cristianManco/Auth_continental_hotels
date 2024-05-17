@@ -1,4 +1,3 @@
-// Código para el servicio de administradores en la aplicación de la cadena de hoteles
 import {
   Injectable,
   HttpException,
@@ -16,7 +15,7 @@ export class AdminService {
 
   async create(createAdminDto: CreateAdminDto): Promise<Admin> {
     try {
-      // Verificar si el correo electrónico ya está registrado
+      // validar si el correo  ya está registrado
       const existingAdmin = await this.model
         .findOne({ email: createAdminDto.email })
         .exec();
@@ -41,7 +40,6 @@ export class AdminService {
   async findAll(): Promise<Admin[]> {
     return this.model.find().exec();
   }
-
   async findOne(id: string): Promise<Admin> {
     const admin = await this.model.findById(id).exec();
     if (!admin) {
@@ -49,7 +47,6 @@ export class AdminService {
     }
     return admin;
   }
-
   async findOneByEmail(email: string): Promise<Admin> {
     const admin = await this.model.findOne({ email }).exec();
     if (!admin) {
@@ -57,7 +54,7 @@ export class AdminService {
     }
     return admin;
   }
-
+// buscar administradores por email
   async findOneByEmailRegister(email: string): Promise<Admin> {
     const admin = await this.model.findOne({ email }).exec();
     if (admin) {
@@ -68,6 +65,7 @@ export class AdminService {
     }
     return admin;
   }
+  // actualizar datos admin
 
   async update(id: string, updateAdminDto: UpdateAdminDto): Promise<Admin> {
     const updatedAdmin = await this.model
@@ -78,9 +76,10 @@ export class AdminService {
     }
     return updatedAdmin;
   }
-
+// eliminar admin
   async remove(id: string): Promise<void> {
-    const admin = await this.model.findByIdAndDelete(id).exec();
+    const admin = await this.model.findByIdAndDelete(id)
+    .exec();
     if (!admin) {
       throw new NotFoundException(`user with ID ${id} not found`);
     }
