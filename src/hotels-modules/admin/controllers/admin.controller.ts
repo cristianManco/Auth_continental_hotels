@@ -28,13 +28,15 @@ export class AdminController {
     return await this.service.create(createAdminDto);
   }
 
-  @Roles('employe')
+
+  @Roles('admin')
   @Get('all')
   async findAll() {
     return await this.service.findAll();
   }
 
-  @Roles('employe')
+
+  @Roles('admin')
   @Get(':_id')
   async findOne(@Param('_id') id: string) {
     return await this.service.findOne(id);
@@ -49,7 +51,8 @@ export class AdminController {
     return await this.service.update(id, updateAdminDto);
   }
 
-  @Roles('developer')
+
+  @Roles('admin')
   @Delete(':_id')
   async remove(@Param('_id') id: string) {
     return await this.service.remove(id);

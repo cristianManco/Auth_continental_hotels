@@ -1,4 +1,3 @@
-// Código para el módulo de persistencia en la aplicación de la cadena de hoteles
 import { Global, Module } from '@nestjs/common';
 import { ConfigType } from '@nestjs/config';
 import { MongooseModule } from '@nestjs/mongoose';
@@ -12,15 +11,16 @@ import { Privated } from '../decorators/private.decorator';
     MongooseModule.forRootAsync({
       useFactory: (configService: ConfigType<typeof dbConfig>) => {
         const { db, env } = configService;
-        const uriDb =
-          env === 'local'
-            ? `mongodb+srv://${db.user}:${db.password}@cluster0.mg3yga1.mongodb.net/`
-            : `${db.connection}${db.host}/${db.name}`;
+        const isProduction = env === process.env.DATABASE_ENV
+        const uriDb = isProduction
+          ? `mongodb+srv://${db.user}:${db.password}@${db.cluster}.mongodb.net/${db.atlas}?retryWrites=true&w=majority&appName=continental`
+          : `${db.connection}${db.host}/${db.name}`;
+
         return {
-          uri: uriDb,
+          uri: uriDb, 
         };
       },
-      inject: [dbConfig.KEY],
+      inject: [dbConfig.KEY], 
     }),
   ],
 })

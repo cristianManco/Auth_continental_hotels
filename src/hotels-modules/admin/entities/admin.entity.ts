@@ -1,4 +1,3 @@
-// Código para la entidad de administrador en la aplicación de la cadena de hoteles
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Transform } from 'class-transformer';
 import {
@@ -14,16 +13,17 @@ import {
 import { Document } from 'mongoose';
 
 export enum UserType {
-  SUPER_ADMIN = 'developer',
   ADMIN = 'admin',
   USER = 'user',
-  EMPLOYEE = 'employe',
 }
 
 @Schema({ timestamps: true })
 export class Admin extends Document {
   @Prop({ required: true })
   name: string;
+
+  @Prop({ required: true })
+  document: number;
 
   @Prop({ required: true })
   phone: string;

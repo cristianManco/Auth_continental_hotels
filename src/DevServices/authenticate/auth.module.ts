@@ -19,6 +19,6 @@ import { InterceptorService } from './services/interceptor/interceptor.service';
   ],
   controllers: [AuthController],
   providers: [JwtStrategy, InterceptorService, AuthService, BlacklistService],
-  exports: [BlacklistService], // Agregue esta línea
+  exports: [BlacklistService],
 })
 export class AuthModule {}

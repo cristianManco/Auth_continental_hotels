@@ -8,14 +8,18 @@ import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { Admin } from '../entities/admin.entity';
 import { CreateAdminDto, UpdateAdminDto } from '../dtos/exports';
+import { HashService } from 'src/DevServices/shared-modules/encript/encript.service';
 
 @Injectable()
 export class AdminService {
-  constructor(@InjectModel(Admin.name) private model: Model<Admin>) {}
+  constructor(
+    @InjectModel(Admin.name) private model: Model<Admin>,
+    private readonly hashService: HashService,
+  ) {}
 
   async create(createAdminDto: CreateAdminDto): Promise<Admin> {
     try {
-      // validar si el correo  ya está registrado
+
       const existingAdmin = await this.model
         .findOne({ email: createAdminDto.email })
         .exec();
@@ -25,10 +29,15 @@ export class AdminService {
           HttpStatus.BAD_REQUEST,
         );
       }
+      const hashedPassword = await this.hashService.hash(
+        createAdminDto.password,
+      );
 
-      // Crear el nuevo administrador
-      const newAdmin = await this.model.create(createAdminDto);
-      return await newAdmin;
+      const newAdmin = await this.model.create({
+        ...createAdminDto,
+        password: hashedPassword,
+      });
+      return await newAdmin.save();
     } catch (error) {
       throw new HttpException(
         'Error creating the user: ',

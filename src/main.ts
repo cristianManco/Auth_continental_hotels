@@ -1,12 +1,14 @@
 import { NestFactory } from '@nestjs/core';
 import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
 import { AppModule } from './app.module';
+import * as cors from 'cors';
 
 async function bootstrap() {
-  const app = await NestFactory.create(AppModule);
+  const app = await NestFactory.create(AppModule, { cors: true });
   const port = process.env.PORT || 3000;
-  app.enableCors(); // permite  habilitar el envio de datos del puerto de ejecucion de reactjs
 
+  app.enableCors();
+  app.use(cors());
   const config = new DocumentBuilder()
     .setTitle('Continental Hotels API')
     .setDescription(
