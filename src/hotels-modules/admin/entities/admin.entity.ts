@@ -14,16 +14,20 @@ import {
 import { Document } from 'mongoose';
 
 export enum UserType {
-  SUPER_ADMIN = 'developer',
+//  SUPER_ADMIN = 'developer',
   ADMIN = 'admin',
   USER = 'user',
-  EMPLOYEE = 'employe',
+  USERCOMUN="comun"
+ // EMPLOYEE = 'employe',
 }
 
 @Schema({ timestamps: true })
 export class Admin extends Document {
   @Prop({ required: true })
   name: string;
+
+  @Prop({ required: true })
+  document: number;
 
   @Prop({ required: true })
   phone: string;

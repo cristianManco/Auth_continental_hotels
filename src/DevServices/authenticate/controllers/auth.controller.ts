@@ -23,13 +23,6 @@ export class AuthController {
     return this.authService.register(signUpDto);
   }
 
-  // @Post('logout')
-  // @HttpCode(HttpStatus.OK)
-  // async logout(@Body('token') token: string) {
-  //   await this.authService.logout(token);
-  //   return { message: 'Logout successful' };
-  // }
-
   @UseGuards(AtGuard)
   @Post('logout')
   @HttpCode(HttpStatus.OK)
@@ -37,7 +30,7 @@ export class AuthController {
     await this.authService.logout(token);
     return { message: 'Logout successful' };
   }
-  
+
   @Post('check')
   @UseGuards(AtGuard)
   @ApiBearerAuth()

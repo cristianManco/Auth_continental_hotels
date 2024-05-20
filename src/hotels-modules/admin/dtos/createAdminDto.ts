@@ -7,6 +7,7 @@ import {
   MaxLength,
   IsOptional,
   Matches,
+  IsNumber,
 } from 'class-validator';
 import { ApiProperty } from '@nestjs/swagger';
 
@@ -16,6 +17,13 @@ export class CreateAdminDto {
   @IsString()
   readonly name: string;
 
+
+
+  @ApiProperty()
+  @IsNotEmpty()
+  @IsNumber()
+  readonly  document: number;
+  
   @ApiProperty()
   @IsNotEmpty()
   @IsString()

@@ -60,10 +60,10 @@ export class AuthService {
   async getTokens(jwtPayload: JwtPayload): Promise<Tokens> {
     const secretKey = process.env.JWT_SECRET;
     if (!secretKey) {
-      throw new Error('JWT_SECRET is not set or es invalit');
+      throw new Error('JWT_SECRET is not set or is invalid');
     }
     const accessTokenOptions = {
-      expiresIn: process.env.ACCES_TOKEN_EXPIRE || '1h',
+      expiresIn: process.env.ACCESS_TOKEN_EXPIRE || '1h',
     };
 
     const accessToken = await this.signToken(
@@ -86,7 +86,7 @@ export class AuthService {
     const user = await this.adminService.findOneByEmailRegister(email);
 
     if (user) {
-      throw new HttpException('Email already exists! Try again', 400);
+      throw new HttpException('Email already exists! Try again', HttpStatus.BAD_REQUEST);
     }
     return true;
   }

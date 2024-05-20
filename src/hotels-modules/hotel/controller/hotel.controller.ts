@@ -28,13 +28,13 @@ export class HotelController {
     return await this.hotelService.create(createHotelDto);
   }
 
-  @Roles('employe')
+  @Roles('user','admin')
   @Get('all')
   async findAll(): Promise<Hotel[]> {
     return await this.hotelService.findAll();
   }
 
-  @Roles('user')
+  @Roles('user','admin')
   @Get(':_id')
   async findOne(@Param('_id') id: string): Promise<Hotel> {
     return await this.hotelService.findOne(id);
@@ -49,7 +49,7 @@ export class HotelController {
     return await this.hotelService.update(id, updateHotelDto);
   }
 
-  @Roles('developer')
+  @Roles('admin')
   @Delete(':_id')
   async remove(@Param('_id') id: string): Promise<void> {
     return await this.hotelService.remove(id);
