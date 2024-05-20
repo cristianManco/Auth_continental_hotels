@@ -21,18 +21,20 @@ import { Roles } from 'src/DevServices/decorators/exports';
 export class HotelController {
   constructor(private readonly hotelService: HotelService) {}
 
-  @Roles('admin')
+  @Roles('admin')  // Restringe el acceso a usuarios con rol de 'admin'.
   @Post('new')
   @UsePipes(new ValidationPipe())
   async createHotel(@Body() createHotelDto: CreateHotelDto): Promise<Hotel> {
     return await this.hotelService.create(createHotelDto);
   }
 
+
   @Roles('user','admin')
   @Get('all')
   async findAll(): Promise<Hotel[]> {
     return await this.hotelService.findAll();
   }
+
 
   @Roles('user','admin')
   @Get(':_id')
@@ -48,6 +50,7 @@ export class HotelController {
   ): Promise<Hotel> {
     return await this.hotelService.update(id, updateHotelDto);
   }
+
 
   @Roles('admin')
   @Delete(':_id')

@@ -34,6 +34,8 @@ export class AuthService {
     return this.getTokens({
       sub: user.id,
       name: user.name,
+      role: user.role,
+
     });
   }
 
@@ -50,6 +52,8 @@ export class AuthService {
     return await this.getTokens({
       sub: user.id,
       name: user.name,
+      role: user.role,
+
     });
   }
 

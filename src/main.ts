@@ -6,6 +6,7 @@ import * as cors from 'cors';
 async function bootstrap() {
   const app = await NestFactory.create(AppModule, { cors: true });
   const port = process.env.PORT || 3000;
+
   app.enableCors();
   app.use(cors());
   const config = new DocumentBuilder()
@@ -27,3 +28,4 @@ async function bootstrap() {
   console.log(`The application is running in: http://localhost:${port}/api`);
 }
 bootstrap();
+

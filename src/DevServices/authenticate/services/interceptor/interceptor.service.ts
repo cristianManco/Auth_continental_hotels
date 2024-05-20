@@ -16,9 +16,16 @@ export class InterceptorService implements NestInterceptor {
     context: ExecutionContext,
     next: CallHandler,
   ): Promise<Observable<any>> {
+
+     const request = context.switchToHttp().getRequest();
+    const token = request.headers.authorization;
+
     // Check if the token is blacklisted
-    const request = context.switchToHttp().getRequest();
-    const token = request.headers.authorization?.split(' ')[1];
+    const isBlacklisted = await this.blacklist.isTokenBlacklisted(token);
+    if (isBlacklisted) {
+      throw new UnauthorizedException('User token is blacklisted.');
+
+      const token = request.headers.authorization?.split(' ')[1];
 
     if (token) {
       const isBlacklisted = await this.blacklistService.isTokenBlacklisted(token);
