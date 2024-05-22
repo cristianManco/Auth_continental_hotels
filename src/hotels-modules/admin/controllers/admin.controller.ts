@@ -28,11 +28,13 @@ export class AdminController {
     return await this.service.create(createAdminDto);
   }
 
+
   @Roles('admin')
   @Get('all')
   async findAll() {
     return await this.service.findAll();
   }
+
 
   @Roles('admin')
   @Get(':_id')
@@ -48,6 +50,7 @@ export class AdminController {
   ): Promise<Admin> {
     return await this.service.update(id, updateAdminDto);
   }
+
 
   @Roles('admin')
   @Delete(':_id')

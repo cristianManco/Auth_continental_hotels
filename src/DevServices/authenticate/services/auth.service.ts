@@ -54,6 +54,10 @@ export class AuthService {
       sub: user.id,
       name: user.name,
       role: user.role,
+<<<<<<< HEAD
+=======
+
+>>>>>>> 9be69809c69e48214c8ff8cc73e59843e096378c
     });
   }
 
