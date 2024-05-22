@@ -1,4 +1,4 @@
-import { Injectable, HttpException, HttpStatus } from '@nestjs/common';
+import { Injectable, HttpException, HttpStatus, UnauthorizedException } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { BlacklistService } from './blacklist/blacklist.service';
 import { HashService } from 'src/DevServices/shared-modules/encript/encript.service';
@@ -34,8 +34,11 @@ export class AuthService {
     return this.getTokens({
       sub: user.id,
       name: user.name,
+      role: user.role,
+
     });
   }
+
 
   async register(signUPDto: SignUpDto): Promise<Tokens> {
     await this.validateEmailForSignUp(signUPDto.email);
@@ -50,12 +53,14 @@ export class AuthService {
     return await this.getTokens({
       sub: user.id,
       name: user.name,
+      role: user.role,
     });
   }
 
   async logout(token: string): Promise<void> {
     await this.blackLisToken.addToBlacklist(token);
   }
+
 
   async getTokens(jwtPayload: JwtPayload): Promise<Tokens> {
     const secretKey = process.env.JWT_SECRET;

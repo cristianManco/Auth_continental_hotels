@@ -1,8 +1,9 @@
-import { Controller, Body, Post, HttpCode, HttpStatus, UseGuards } from '@nestjs/common';
+import { JwtPayload } from './../types/jwtPayload.type';
+import { Controller, Body, Post, HttpCode, HttpStatus, UseGuards, Get, InternalServerErrorException,  Headers, UnauthorizedException } from '@nestjs/common';
 import { AuthService } from '../services/auth.service';
 import { UserLoginDto, SignUpDto } from '../dtos/export';
 import { Public } from 'src/DevServices/decorators/exports';
-import { ApiBearerAuth } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiOperation } from '@nestjs/swagger';
 import { AtGuard } from '../Guard/jwt.guard';
 
 @Controller('auth')
@@ -31,11 +32,16 @@ export class AuthController {
     return { message: 'Logout successful' };
   }
 
+
+
+  
   @Post('check')
   @UseGuards(AtGuard)
   @ApiBearerAuth()
   @HttpCode(HttpStatus.OK)
-  async check() {
+  async check(): Promise<boolean> {
     return true;
   }
+
+
 }

@@ -220,3 +220,22 @@ Ejemplo de guard:
 %     return user;
 %   }
 % }
+
+%verificar y devolver el token de acceso:
+
+
+% @Get('check')
+% @UseGuards(AtGuard)
+% @ApiBearerAuth()
+% @HttpCode(HttpStatus.OK)
+% async check(@Headers('authorization') token: string) {
+%     try {
+%         const secret = process.env.JWT_SECRET;
+%         const decodedToken = jwt.verify(token, secret);
+%         const { userId, role } = decodedToken as { userId: string; role: string };
+
+%         return { token, userId, role };
+%     } catch (error) {
+%         throw new UnauthorizedException('Token inválido');
+%     }
+% }

@@ -13,7 +13,7 @@ async function bootstrap() {
     .setDescription(
       'The Continental Hotels API provides a complete interface for hotel management, including reservations, room management, billing and more. This API is designed to be easy to use and highly flexible, allowing easy integration with a variety of hotel management systems.',
     )
-    .setVersion('1.0')
+    .setVersion('2.0')
     .addTag('Hotels', 'Operations related to hotel management')
     .addTag('Reservas', 'Operations related to hotel reservation management')
     .addTag('Billing', 'Invoicing and payment transactions')
@@ -24,6 +24,8 @@ async function bootstrap() {
 
   app.setGlobalPrefix('/api');
   await app.listen(port);
-  console.log(`The application is running in: http://localhost:${port}/api`);
+  console.log(`The application is running in: http://localhost:${port}/api\n`);
+  console.log(`the swagger app is running in: http://localhost:${port}/api/docs`);
+  
 }
 bootstrap();
