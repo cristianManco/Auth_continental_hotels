@@ -20,13 +20,8 @@ The project is structured as follows:
 
 ```markdown
 project/
-├── nestjs_project/
-│   ├── Front-end/
-│   │   ├── html/
-│   │   │   ├── **register.html**
-│   │   │   └── **login.html**
-│   │   └── css/
-│   │       └── **styles.css**
+├── nestjs_project/ 
+│   |      
 │   ├── src/
 │   │   ├── develop/
 │   │   │   ├── authenticate/
